@@ -16,8 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine;
 
-import javax.swing.*;
-import java.awt.*;
+import com.github.noxchimaera.massacre.engine.scene.Scene;
 
 /**
  * @author Max Balushkin
@@ -48,7 +47,7 @@ public abstract class GameScreen implements Initializable, Updatable, Drawable {
         this.running = running;
     }
 
-    @Override public void draw(GameTime gameTime) {
+    @Override public void draw() {
         scene.repaint();
 //        scene.repaint();
     }

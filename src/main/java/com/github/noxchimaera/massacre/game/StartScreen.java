@@ -19,45 +19,58 @@ package com.github.noxchimaera.massacre.game;
 import com.github.noxchimaera.massacre.engine.GameObject;
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
-import com.github.noxchimaera.massacre.engine.Scene;
+import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Max Balushkin
  */
 public class StartScreen extends GameScreen {
 
-    private GameObject go;
+    private List<GameObject> gos = new ArrayList<>();
 
     @Override public void draw(GameTime gameTime) {
         super.draw(gameTime);
     }
 
     @Override public void update(GameTime gameTime) {
+        for (GameObject go : gos) {
         float v = go.getSpeed() * gameTime.getDt();
-        float x = go.getX();
-        float y = go.getY();
+            float x = go.getX();
+            float y = go.getY();
 
-        if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
-            y -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN)) {
-            y += v;
+            if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
+                y -= v;
+            } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN)) {
+                y += v;
+            }
+            if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT)) {
+                x -= v;
+            } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
+                x += v;
+            }
+            go.setX(x);
+            go.setY(y);
         }
-        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT)) {
-            x -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
-            x += v;
-        }
-        go.setX(x);
-        go.setY(y);
     }
 
     @Override public void initialize() {
-        go = new GameObject(100, 100, 50, 50, Color.GREEN, 500);
-        getScene().addObject(go);
+        gos.add(new GameObject(100, 100, 50, 50, Color.GREEN, 50));
+        gos.add(new GameObject(100, 150, 50, 50, Color.RED, 0));
+
+        gos.add(new GameObject(0, 10, 32, 50, Color.GREEN, 20));
+        gos.add(new GameObject(50, 170, 50, 30, Color.GREEN, 100));
+        gos.add(new GameObject(100, 300, 50, 50, Color.GREEN, 70));
+
+        for (GameObject gameObject : gos) {
+            getScene().addObject(gameObject);
+        }
+
         getScene().addString(new Scene.SceneString("Some text", 100, 100, Color.RED));
     }
 }

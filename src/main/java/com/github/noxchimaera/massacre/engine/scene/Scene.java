@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine;
+package com.github.noxchimaera.massacre.engine.scene;
+
+import com.github.noxchimaera.massacre.engine.GameObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -28,9 +31,13 @@ public class Scene extends JPanel {
     private ArrayList<SceneString> strList;
     private ArrayList<GameObject> objects;
 
+    private BufferedImage buffer;
+
     public Scene() {
         strList = new ArrayList<>();
         objects = new ArrayList<>();
+
+//        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
     public void addObject(GameObject obj) {
@@ -42,19 +49,22 @@ public class Scene extends JPanel {
     }
 
     @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D)g;
+        if (buffer == null) {
+            buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        }
+        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
+        g2d.setColor(Color.GRAY);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
         for (GameObject go : objects) {
             g2d.setColor(go.getColour());
-            g2d.drawRect((int)go.getX(), (int)go.getY(), go.getW(), go.getH());
+            g2d.fillRect((int)go.getX(), (int)go.getY(), go.getW(), go.getH());
         }
 
         for (SceneString str : strList) {
             g2d.setColor(str.getColour());
             g2d.drawString(str.getContent(), str.getX(), str.getY());
         }
-
-
+        g.drawImage(buffer, 0, 0, this);
     }
 
     public static class SceneString {

@@ -60,35 +60,43 @@ public class Game implements Initializable {
         container.setVisible(true);
     }
 
-    private long time() {
-        return System.currentTimeMillis();
+    private long nano() {
+        return System.nanoTime();
     }
 
     public void run() {
-        final int tps = 60;
-        final int skip = 1000 / tps;
-        final float skip_f = 1000f / tps;
-        final int maxSkip = 5;
-
-        long nextTick = time();
+        // Game loop by Eric from Entropy Interactive
+        final double second = 1000000000.0;
+        final double delta = 1 / 60.0;
+        double nextTime = (double)nano() / second;
+        double maxTimeDiff = 0.5;
+        int skippedFrames = 1;
+        int maxSkippedFrames = 5;
         while (currentScreen.isRunning()) {
-            int i = 0;
-            long delta;
-            float delta_f;
-            // Updates logic `tps` times per second
-            for (long t = time(); t > nextTick && i < maxSkip; t = time()) {
-                delta = t - nextTick;
-                delta_f = delta / skip_f;
-                currentScreen.update(new GameTime(delta, delta_f));
-
-                ++i;
-                nextTick += skip;
+            double curTime = (double)nano() / second;
+            if ((curTime - nextTime) > maxTimeDiff) {
+                nextTime = curTime;
             }
-
-            delta = time() + skip - nextTick;
-            delta_f = delta / skip_f;
-            // Draws scene once at game loop
-            currentScreen.draw(new GameTime(delta, delta_f));
+            if (curTime >= nextTime) {
+                nextTime += delta;
+                currentScreen.update(new GameTime(delta));
+                if (curTime < nextTime || skippedFrames > maxSkippedFrames) {
+                    // Time to draw the scene
+                    currentScreen.draw();
+                    skippedFrames = 1;
+                } else {
+                    ++skippedFrames;
+                }
+            } else {
+                // Skip rest
+                int sleepTime = (int)(1000 * (nextTime - curTime));
+                if (sleepTime > 0) {
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (Exception e) {
+                    }
+                }
+            }
         }
     }
 

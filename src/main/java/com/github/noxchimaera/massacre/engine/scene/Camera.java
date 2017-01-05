@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine;
+package com.github.noxchimaera.massacre.engine.scene;
 
 /**
  * @author Max Balushkin
  */
-public interface Drawable {
-
-    void draw();
-
+public class Camera {
 }

@@ -21,19 +21,13 @@ package com.github.noxchimaera.massacre.engine;
  */
 public class GameTime {
 
-    private final long elapsedGameTime;
-    private final float dt;
+    private final double dt;
 
-    public GameTime(long elapsedGameTime, float dt) {
-        this.elapsedGameTime = elapsedGameTime;
+    public GameTime(double dt) {
         this.dt = dt;
     }
 
-    long getElapsedGameTime() {
-        return elapsedGameTime;
-    }
-
-    public float getDt() {
+    public double getDt() {
         return dt;
     }
 

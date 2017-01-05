@@ -16,6 +16,8 @@
 
 package com.github.noxchimaera.massacre.engine;
 
+import com.github.noxchimaera.massacre.engine.models.Vector;
+
 import java.awt.*;
 
 /**
@@ -70,6 +72,10 @@ public class GameObject {
         this.h = h;
     }
 
+    public Vector getSize() {
+        return new Vector(w, h);
+    }
+
     public Color getColour() {
         return colour;
     }
@@ -86,5 +92,12 @@ public class GameObject {
         this.speed = speed;
     }
 
+    public Vector getLocation() {
+        return new Vector((int)x, (int)y);
+    }
+
+    public Vector getOrigin() {
+        return new Vector((int)(x + w / 2), (int)(y + h / 2));
+    }
 
 }

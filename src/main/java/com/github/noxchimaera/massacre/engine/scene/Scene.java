@@ -17,6 +17,7 @@
 package com.github.noxchimaera.massacre.engine.scene;
 
 import com.github.noxchimaera.massacre.engine.GameObject;
+import com.github.noxchimaera.massacre.engine.models.Vector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
  */
 public class Scene extends JPanel {
 
+    private Camera camera;
+
     private ArrayList<SceneString> strList;
     private ArrayList<GameObject> objects;
 
@@ -37,7 +40,11 @@ public class Scene extends JPanel {
         strList = new ArrayList<>();
         objects = new ArrayList<>();
 
-//        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        camera = new Camera(this);
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     public void addObject(GameObject obj) {
@@ -52,12 +59,24 @@ public class Scene extends JPanel {
         if (buffer == null) {
             buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         }
+        camera.moveToTarget();
+        Vector cam = camera.getLocation();
+//        Vector cam = new Vector(0,0);
+
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, getWidth(), getHeight());
         for (GameObject go : objects) {
+            Vector loc = go.getLocation();
+            Vector size = go.getSize();
+            if (loc.x() + size.x() < cam.x() && loc.y() + size.y() < cam.y()) {
+                continue;
+            } else if (loc.x() > getWidth() && loc.y() > getHeight()) {
+                continue;
+            }
+
             g2d.setColor(go.getColour());
-            g2d.fillRect((int)go.getX(), (int)go.getY(), go.getW(), go.getH());
+            g2d.fillRect((int)(go.getX() - cam.x()), (int)(go.getY() - cam.y()), go.getW(), go.getH());
         }
 
         for (SceneString str : strList) {

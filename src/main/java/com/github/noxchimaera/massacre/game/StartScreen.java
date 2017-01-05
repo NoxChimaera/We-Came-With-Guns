@@ -34,33 +34,34 @@ public class StartScreen extends GameScreen {
 
     private List<GameObject> gos = new ArrayList<>();
 
-    @Override public void draw(GameTime gameTime) {
-        super.draw(gameTime);
+    @Override public void draw() {
+        super.draw();
     }
 
     @Override public void update(GameTime gameTime) {
-        for (GameObject go : gos) {
-        float v = go.getSpeed() * gameTime.getDt();
-            float x = go.getX();
-            float y = go.getY();
+        GameObject go = gos.get(0);
 
-            if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
-                y -= v;
-            } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN)) {
-                y += v;
-            }
-            if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT)) {
-                x -= v;
-            } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
-                x += v;
-            }
-            go.setX(x);
-            go.setY(y);
+        double v = go.getSpeed() * gameTime.getDt();
+        float x = go.getX();
+        float y = go.getY();
+
+        if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
+            y -= v;
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN)) {
+            y += v;
         }
+        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT)) {
+            x -= v;
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
+            x += v;
+        }
+        go.setX(x);
+        go.setY(y);
     }
 
     @Override public void initialize() {
-        gos.add(new GameObject(100, 100, 50, 50, Color.GREEN, 50));
+        GameObject go = new GameObject(10, 10, 50, 50, Color.BLUE, 50);
+        gos.add(go);
         gos.add(new GameObject(100, 150, 50, 50, Color.RED, 0));
 
         gos.add(new GameObject(0, 10, 32, 50, Color.GREEN, 20));
@@ -70,6 +71,8 @@ public class StartScreen extends GameScreen {
         for (GameObject gameObject : gos) {
             getScene().addObject(gameObject);
         }
+
+        getScene().getCamera().setOrigin(go);
 
         getScene().addString(new Scene.SceneString("Some text", 100, 100, Color.RED));
     }

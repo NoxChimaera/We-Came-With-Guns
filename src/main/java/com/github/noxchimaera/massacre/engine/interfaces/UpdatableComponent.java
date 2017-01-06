@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine;
+package com.github.noxchimaera.massacre.engine.interfaces;
+
+import com.github.noxchimaera.massacre.engine.GameTime;
 
 /**
  * @author Max Balushkin
  */
-public interface Drawable {
+public interface UpdatableComponent {
 
-    void draw();
+    void update(GameTime gameTime);
 
 }

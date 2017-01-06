@@ -16,12 +16,15 @@
 
 package com.github.noxchimaera.massacre.engine;
 
+import com.github.noxchimaera.massacre.engine.interfaces.DrawableComponent;
+import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
+import com.github.noxchimaera.massacre.engine.interfaces.UpdatableComponent;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 
 /**
  * @author Max Balushkin
  */
-public abstract class GameScreen implements Initializable, Updatable, Drawable {
+public abstract class GameScreen implements InitializableComponent, UpdatableComponent, DrawableComponent {
 
     private Scene scene;
     private boolean running;

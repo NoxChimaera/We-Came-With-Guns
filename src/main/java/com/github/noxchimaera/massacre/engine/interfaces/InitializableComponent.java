@@ -14,44 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.models;
+package com.github.noxchimaera.massacre.engine.interfaces;
 
 /**
+ * InitializableComponent component.
+ *
  * @author Max Balushkin
  */
-public class Vector {
+public interface InitializableComponent {
 
-    private float x;
-    private float y;
-
-    public Vector(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public float x() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float y() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public Vector sub(Vector b) {
-        return new Vector(x - b.x(), y - b.y());
-    }
-
-    public Vector add(Vector b) {
-        return new Vector(x + b.x(), y + b.y());
-    }
-
+    /**
+     * Initializes component.
+     */
+    void initialize();
 
 }

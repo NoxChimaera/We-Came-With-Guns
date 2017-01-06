@@ -14,44 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.models;
+package com.github.noxchimaera.massacre.engine.actors;
+
+import com.github.noxchimaera.massacre.engine.interfaces.UpdatableObject;
+import com.github.noxchimaera.massacre.engine.scene.GameObject;
 
 /**
  * @author Max Balushkin
  */
-public class Vector {
+public abstract class Actor implements UpdatableObject {
 
-    private float x;
-    private float y;
+    private boolean enabled = true;
 
-    public Vector(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public float x() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float y() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public Vector sub(Vector b) {
-        return new Vector(x - b.x(), y - b.y());
-    }
-
-    public Vector add(Vector b) {
-        return new Vector(x + b.x(), y + b.y());
-    }
-
+    private GameObject gameObject;
 
 }

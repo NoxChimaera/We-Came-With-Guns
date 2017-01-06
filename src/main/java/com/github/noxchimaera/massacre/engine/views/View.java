@@ -14,44 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.models;
+package com.github.noxchimaera.massacre.engine.views;
+
+import com.github.noxchimaera.massacre.engine.interfaces.DrawableObject;
+import com.github.noxchimaera.massacre.engine.models.Vector;
+
+import java.awt.*;
 
 /**
  * @author Max Balushkin
  */
-public class Vector {
+public abstract class View implements DrawableObject {
 
-    private float x;
-    private float y;
-
-    public Vector(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public float x() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float y() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public Vector sub(Vector b) {
-        return new Vector(x - b.x(), y - b.y());
-    }
-
-    public Vector add(Vector b) {
-        return new Vector(x + b.x(), y + b.y());
-    }
-
+    public abstract Vector getSize();
+    public abstract Vector getOrigin();
 
 }

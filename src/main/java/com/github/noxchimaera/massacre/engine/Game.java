@@ -17,6 +17,7 @@
 package com.github.noxchimaera.massacre.engine;
 
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
+import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,7 @@ import java.awt.*;
 /**
  * @author Max Balushkin
  */
-public class Game implements Initializable {
+public class Game implements InitializableComponent {
 
     private String gameTitle = "The Game";
 
@@ -71,7 +72,7 @@ public class Game implements Initializable {
         double nextTime = (double)nano() / second;
         double maxTimeDiff = 0.5;
         int skippedFrames = 1;
-        int maxSkippedFrames = 5;
+        int maxSkippedFrames = 2;
         while (currentScreen.isRunning()) {
             double curTime = (double)nano() / second;
             if ((curTime - nextTime) > maxTimeDiff) {

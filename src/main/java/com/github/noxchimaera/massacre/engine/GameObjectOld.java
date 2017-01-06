@@ -23,7 +23,7 @@ import java.awt.*;
 /**
  * @author Max Balushkin
  */
-public class GameObject {
+public class GameObjectOld {
 
     private float x, y;
     private int w, h;
@@ -31,7 +31,7 @@ public class GameObject {
 
     private float speed;
 
-    public GameObject(float x, float y, int w, int h, Color colour, float speed) {
+    public GameObjectOld(float x, float y, int w, int h, Color colour, float speed) {
         this.x = x;
         this.y = y;
         this.w = w;

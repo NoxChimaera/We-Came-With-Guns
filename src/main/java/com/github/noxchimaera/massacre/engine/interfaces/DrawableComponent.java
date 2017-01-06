@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine;
+package com.github.noxchimaera.massacre.engine.interfaces;
 
 /**
- * Initializable component.
- *
  * @author Max Balushkin
  */
-public interface Initializable {
+public interface DrawableComponent {
 
-    /**
-     * Initializes component.
-     */
-    void initialize();
+    void draw();
 
 }

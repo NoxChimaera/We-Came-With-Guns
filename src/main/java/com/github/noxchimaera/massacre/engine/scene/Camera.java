@@ -16,7 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.GameObject;
+import com.github.noxchimaera.massacre.engine.GameObjectOld;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 
 /**
@@ -49,7 +49,9 @@ public class Camera {
         int w = parent.getWidth();
         int h = parent.getHeight();
 
-        Vector o = origin.getOrigin();
+        Vector o = origin.getView() != null
+            ? origin.getLocation().add(origin.getView().getOrigin())
+            : origin.getLocation();
         location = new Vector(o.x() - w / 2, o.y() - h / 2);
     }
 

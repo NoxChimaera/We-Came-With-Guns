@@ -16,16 +16,19 @@
 
 package com.github.noxchimaera.massacre.game;
 
-import com.github.noxchimaera.massacre.engine.GameObject;
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
-import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
+import com.github.noxchimaera.massacre.engine.scene.GameObject;
+import com.github.noxchimaera.massacre.engine.scene.Scene;
+import com.github.noxchimaera.massacre.engine.views.RectangleView;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Random;
 
 /**
  * @author Max Balushkin
@@ -39,11 +42,11 @@ public class StartScreen extends GameScreen {
     }
 
     @Override public void update(GameTime gameTime) {
-        GameObject go = gos.get(0);
+        GameObject go = getScene().getObjectByTag("player");
 
-        double v = go.getSpeed() * gameTime.getDt();
-        float x = go.getX();
-        float y = go.getY();
+        double v = 150 * gameTime.getDt();
+        float x = go.getLocation().x();
+        float y = go.getLocation().y();
 
         if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
             y -= v;
@@ -55,18 +58,23 @@ public class StartScreen extends GameScreen {
         } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
             x += v;
         }
-        go.setX(x);
-        go.setY(y);
+        go.setLocation(x, y);
     }
 
     @Override public void initialize() {
-        GameObject go = new GameObject(10, 10, 50, 50, Color.BLUE, 50);
+        GameObject go = new GameObject(getScene(), "player");
+        go.setLocation(10, 10);
+        go.setView(new RectangleView(50, 50, Color.BLUE));
         gos.add(go);
-        gos.add(new GameObject(100, 150, 50, 50, Color.RED, 0));
 
-        gos.add(new GameObject(0, 10, 32, 50, Color.GREEN, 20));
-        gos.add(new GameObject(50, 170, 50, 30, Color.GREEN, 100));
-        gos.add(new GameObject(100, 300, 50, 50, Color.GREEN, 70));
+        Random r = new Random();
+
+        for (int i = 0; i < 1000; i += 32) {
+            GameObject g = new GameObject(getScene(), "wall");
+            g.setLocation(i, 100);
+            g.setView(new RectangleView(32, 16, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat())));
+            gos.add(g);
+        }
 
         for (GameObject gameObject : gos) {
             getScene().addObject(gameObject);

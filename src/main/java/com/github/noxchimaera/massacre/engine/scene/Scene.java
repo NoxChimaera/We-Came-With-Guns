@@ -16,13 +16,14 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.GameObject;
+import com.github.noxchimaera.massacre.engine.GameObjectOld;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Max Balushkin
@@ -32,13 +33,15 @@ public class Scene extends JPanel {
     private Camera camera;
 
     private ArrayList<SceneString> strList;
-    private ArrayList<GameObject> objects;
+    private List<GameObject> childs;
+
+
 
     private BufferedImage buffer;
 
     public Scene() {
         strList = new ArrayList<>();
-        objects = new ArrayList<>();
+        childs = new ArrayList<>();
 
         camera = new Camera(this);
     }
@@ -48,7 +51,16 @@ public class Scene extends JPanel {
     }
 
     public void addObject(GameObject obj) {
-        objects.add(obj);
+        childs.add(obj);
+    }
+
+    public GameObject getObjectByTag(String tag) {
+        for (GameObject child : childs) {
+            if (child.getTag().equals(tag)) {
+                return child;
+            }
+        }
+        return null;
     }
 
     public void addString(SceneString str) {
@@ -61,22 +73,19 @@ public class Scene extends JPanel {
         }
         camera.moveToTarget();
         Vector cam = camera.getLocation();
-//        Vector cam = new Vector(0,0);
 
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, getWidth(), getHeight());
-        for (GameObject go : objects) {
-            Vector loc = go.getLocation();
-            Vector size = go.getSize();
-            if (loc.x() + size.x() < cam.x() && loc.y() + size.y() < cam.y()) {
-                continue;
-            } else if (loc.x() > getWidth() && loc.y() > getHeight()) {
+        for (GameObject child : childs) {
+            Vector loc = child.getLocation();
+            Vector size = child.getView().getSize();
+            boolean inBounds = loc.x() + size.x() > cam.x() && loc.y() + size.y() > cam.y();
+            inBounds &= loc.x() < getWidth() && loc.y() < getHeight();
+            if (!inBounds) {
                 continue;
             }
-
-            g2d.setColor(go.getColour());
-            g2d.fillRect((int)(go.getX() - cam.x()), (int)(go.getY() - cam.y()), go.getW(), go.getH());
+            child.draw(g2d);
         }
 
         for (SceneString str : strList) {

@@ -16,6 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
+import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.models.Vector;
@@ -31,20 +32,16 @@ import java.util.List;
  */
 public class Scene extends JPanel {
 
-    private boolean showColliders = true;
+    private GameScreen screen;
 
     private Camera camera;
 
-    private ArrayList<SceneString> strList;
-
-    private List<Actor> childs;
-
     private BufferedImage buffer;
 
-    public Scene() {
-        strList = new ArrayList<>();
-        childs = new ArrayList<>();
+    private boolean showColliders = true;
 
+    public Scene(GameScreen screen) {
+        this.screen = screen;
         camera = new Camera(this);
     }
 
@@ -52,19 +49,11 @@ public class Scene extends JPanel {
         return camera;
     }
 
-    public void addObject(Actor obj) {
-        childs.add(obj);
-    }
-
-    public void addString(SceneString str) {
-        strList.add(str);
-    }
-
     public List<Actor> getActorsOnScene() {
         Vector cam = camera.getLocation();
 
         List<Actor> res = new ArrayList<>();
-        for (Actor child : childs) {
+        for (Actor child : screen.getActors()) {
             if (child.getGameObject().getView() == null) {
                 continue;
             }
@@ -77,10 +66,7 @@ public class Scene extends JPanel {
             }
             res.add(child);
         }
-        return childs;
-    }
-    public List<Actor> getActors() {
-        return childs;
+        return res;
     }
 
     private void drawCollider(Graphics2D g, Collider c) {
@@ -98,9 +84,6 @@ public class Scene extends JPanel {
         g.drawRect(x, y, w, h);
         g.drawLine(x, y, x + w, y + h);
         g.drawLine(x, y + h, x + w, y);
-
-
-//        getLocation().sub(getScene().getCamera().getLocation())
     }
 
     @Override protected void paintComponent(Graphics g) {
@@ -121,46 +104,7 @@ public class Scene extends JPanel {
                 }
             }
         }
-        for (SceneString str : strList) {
-            g2d.setColor(str.getColour());
-            g2d.drawString(str.getContent(), str.getX(), str.getY());
-        }
-
         g.drawImage(buffer, 0, 0, this);
-    }
-
-    public static class SceneString {
-        private final String content;
-        private final int x;
-        private final int y;
-        private final Color colour;
-
-        public SceneString(String content, int x, int y) {
-            this(content, x, y, Color.BLACK);
-        }
-
-        public SceneString(String content, int x, int y, Color colour) {
-            this.content = content;
-            this.x = x;
-            this.y = y;
-            this.colour = colour;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public Color getColour() {
-            return colour;
-        }
     }
 
 }

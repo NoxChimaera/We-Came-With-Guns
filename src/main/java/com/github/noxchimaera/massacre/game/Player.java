@@ -35,7 +35,7 @@ public class Player extends Actor {
     private Collider collider_left;
 
     public Player(GameObject gameObject) {
-        super(gameObject);
+        super(gameObject, false, "player");
 
         float x = gameObject.getLocation().x();
         float y = gameObject.getLocation().y();
@@ -53,15 +53,16 @@ public class Player extends Actor {
         colliders.add(collider_left);
     }
 
-    private void updateColliders(float xOffset, float yOffset) {
-        collider_top.setX(collider_top.getX() + xOffset);
-        collider_top.setY(collider_top.getY() + yOffset);
-        collider_right.setX(collider_right.getX() + xOffset);
-        collider_right.setY(collider_right.getY() + yOffset);
-        collider_bottom.setX(collider_bottom.getX() + xOffset);
-        collider_bottom.setY(collider_bottom.getY() + yOffset);
-        collider_left.setX(collider_left.getX() + xOffset);
-        collider_left.setY(collider_left.getY() + yOffset);
+    private void updateColliders() {
+        float x = gameObject.getLocation().x();
+        float y = gameObject.getLocation().y();
+        float w = gameObject.getView().getSize().x();
+        float h = gameObject.getView().getSize().y();
+
+        collider_top.setLocation(x,y - 2);
+        collider_right.setLocation(x + w + 2, y);
+        collider_bottom.setLocation(x, y + h + 2);
+        collider_left.setLocation(x - 2, y);
     }
 
     @Override public void update(GameTime gameTime) {
@@ -75,19 +76,16 @@ public class Player extends Actor {
 
         if (Keyboard.shared().isPressed(KeyEvent.VK_UP) && !collider_top.wasCollision()) {
             y -= v;
-            updateColliders(0, -v);
         } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN) && !collider_bottom.wasCollision()) {
             y += v;
-            updateColliders(0, v);
         }
         if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT) && !collider_left.wasCollision()) {
             x -= v;
-            updateColliders(-v, 0);
         } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT) && !collider_right.wasCollision()) {
             x += v;
-            updateColliders(v, 0);
         }
         gameObject.setLocation(x, y);
+        updateColliders();
     }
 
 }

@@ -27,7 +27,7 @@ import com.github.noxchimaera.massacre.engine.scene.GameObject;
 public class Wall extends Actor {
 
     public Wall(GameObject gameObject) {
-        super(gameObject);
+        super(gameObject, true, "wall");
 
         float x = gameObject.getLocation().x();
         float y = gameObject.getLocation().y();

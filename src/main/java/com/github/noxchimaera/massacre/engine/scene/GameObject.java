@@ -26,8 +26,6 @@ import java.awt.*;
  */
 public class GameObject {
 
-    private String tag;
-
     private float x;
     private float y;
 
@@ -37,12 +35,7 @@ public class GameObject {
     private View view;
 
     public GameObject(Scene scene) {
-        this(scene, "");
-    }
-
-    public GameObject(Scene scene, String tag) {
         this.scene = scene;
-        this.tag = tag;
     }
 
     public Vector getLocation() {
@@ -65,10 +58,6 @@ public class GameObject {
 
     public void setY(float y) {
         this.y = y;
-    }
-
-    public String getTag() {
-        return tag;
     }
 
     public int getZIndex() {

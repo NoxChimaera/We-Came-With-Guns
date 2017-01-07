@@ -42,24 +42,12 @@ public class StartScreen extends GameScreen {
     }
 
     @Override public void update(GameTime gameTime) {
-        getScene().getCamera().moveToTarget();
-        getScene().getActors().forEach(i -> i.getColliders().forEach(j -> j.reset()));
-
-        List<Actor> as = getScene().getActorsOnScene();
-        for (Actor a : as) {
-            for (Collider player_c : player.getColliders()) {
-                for (Collider actor_c : a.getColliders()) {
-                    actor_c.checkCollision(player_c);
-                }
-            }
-        }
-
-        player.update(gameTime);
+        super.update(gameTime);
     }
 
     @Override public void initialize() {
         final Scene scene = getScene();
-        GameObject player_go = new GameObject(scene, "player");
+        GameObject player_go = new GameObject(scene);
         player_go.setLocation(10, 10);
         player_go.setView(new RectangleView(50, 50, Color.GREEN));
         player = new Player(player_go);
@@ -68,7 +56,7 @@ public class StartScreen extends GameScreen {
         walls = new ArrayList<>();
         Random r = new Random();
         for (int i = 0; i < 1000; i += 32) {
-            GameObject wall_go = new GameObject(scene, "wall");
+            GameObject wall_go = new GameObject(scene);
             wall_go.setLocation(i, 100);
             wall_go.setView(new RectangleView(32, 16,
                 new Color(r.nextFloat(), r.nextFloat(), r.nextFloat())));
@@ -77,12 +65,7 @@ public class StartScreen extends GameScreen {
         }
         actors.addAll(walls);
 
-        for (Actor actor : actors) {
-            scene.addObject(actor);
-        }
-
         scene.getCamera().setOrigin(player_go);
-        scene.addString(new Scene.SceneString("Test scene", 50, 50, Color.RED));
     }
 
 }

@@ -17,13 +17,16 @@
 package com.github.noxchimaera.massacre.engine;
 
 import com.github.noxchimaera.massacre.engine.actors.Actor;
+import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.interfaces.DrawableComponent;
 import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
 import com.github.noxchimaera.massacre.engine.interfaces.UpdatableComponent;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
+import com.github.noxchimaera.massacre.game.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Max Balushkin
@@ -36,7 +39,7 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
     protected List<Actor> actors;
 
     public GameScreen() {
-        scene = new Scene();
+        scene = new Scene(this);
         running = true;
         actors = new ArrayList<>();
     }
@@ -55,6 +58,47 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public Actor getActorByTag(String tag) {
+        for (Actor actor : actors) {
+            if (actor.getTag().equals(tag)) {
+                return actor;
+            }
+        }
+        return null;
+    }
+
+    @Override public void update(GameTime gameTime) {
+        scene.getCamera().moveToTarget();
+        actors.forEach(i -> i.getColliders().forEach(j -> j.reset()));
+
+        List<Collider> enabled = actors.stream()
+            .filter(i -> i.isEnabled())
+            .map(i -> i.getColliders())
+            .reduce(new ArrayList<>(), (colliders, colliders2) -> {
+                colliders.addAll(colliders2);
+                return colliders;
+            });
+        List<Collider> active = actors.stream()
+            .filter(i -> i.isEnabled() && !i.isFixed())
+            .map(i -> i.getColliders())
+            .reduce(new ArrayList<>(), (colliders, colliders2) -> {
+                colliders.addAll(colliders2);
+                return colliders;
+            });
+
+        enabled.stream().forEach(i -> {
+            active.stream().forEach(j -> i.checkCollision(j));
+        });
+
+        actors.stream()
+            .filter(i -> i.isEnabled())
+            .forEach(i -> i.update(gameTime));
     }
 
     @Override public void draw() {

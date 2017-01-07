@@ -29,13 +29,26 @@ import java.util.List;
 public abstract class Actor implements UpdatableObject {
 
     private boolean enabled = true;
+    private boolean fixed;
+
+    private String tag;
 
     protected GameObject gameObject;
     protected List<Collider> colliders;
 
-    public Actor(GameObject gameObject) {
+    public Actor(GameObject gameObject, boolean isFixed) {
+        this(gameObject, isFixed, "");
+    }
+
+    public Actor(GameObject gameObject, boolean isFixed, String tag) {
         this.gameObject = gameObject;
         colliders = new ArrayList<>();
+        fixed = isFixed;
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
     }
 
     public boolean isEnabled() {
@@ -44,6 +57,14 @@ public abstract class Actor implements UpdatableObject {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isFixed() {
+        return fixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
     }
 
     public GameObject getGameObject() {

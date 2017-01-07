@@ -53,5 +53,11 @@ public class Vector {
         return new Vector(x + b.x(), y + b.y());
     }
 
+    @Override public String toString() {
+        return "Vector{" +
+            "x=" + x +
+            ", y=" + y +
+            '}';
+    }
 
 }

@@ -18,10 +18,10 @@ package com.github.noxchimaera.massacre.game;
 
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
-import com.github.noxchimaera.massacre.engine.actors.Actor;
-import com.github.noxchimaera.massacre.engine.collision.Collider;
+import com.github.noxchimaera.massacre.engine.models.Vector;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
+import com.github.noxchimaera.massacre.engine.scene.ZIndex;
 import com.github.noxchimaera.massacre.engine.views.RectangleView;
 
 import java.awt.*;
@@ -64,6 +64,13 @@ public class StartScreen extends GameScreen {
             walls.add(wall);
         }
         actors.addAll(walls);
+
+        GameObject cursor_go = new GameObject(scene);
+        cursor_go.setLocation(0, 0);
+        cursor_go.setView(new RectangleView(10, 10, Color.WHITE));
+        cursor_go.setZIndex(ZIndex.GUI);
+        Cursor cursor = new Cursor(cursor_go);
+        actors.add(cursor);
 
         scene.getCamera().setOrigin(player_go);
     }

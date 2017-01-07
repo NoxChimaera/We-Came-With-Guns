@@ -44,6 +44,10 @@ public class RectangleView extends View {
         return new Vector(width / 2, height / 2);
     }
 
+    public Color getColour() {
+        return colour;
+    }
+
     @Override public void draw(Vector loc, Graphics2D g) {
         g.setColor(colour);
         g.fillRect((int)loc.x(), (int)loc.y(), (int)width, (int)height);

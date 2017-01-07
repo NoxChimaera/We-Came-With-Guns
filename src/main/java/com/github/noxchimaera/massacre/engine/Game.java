@@ -17,6 +17,7 @@
 package com.github.noxchimaera.massacre.engine;
 
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
+import com.github.noxchimaera.massacre.engine.controls.Mouse;
 import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
 
 import javax.swing.*;
@@ -57,6 +58,10 @@ public class Game implements InitializableComponent {
         currentScreen.initialize();
 
         container.addKeyListener(Keyboard.shared());
+
+        currentScreen.getScene().addMouseListener(Mouse.shared());
+        currentScreen.getScene().addMouseMotionListener(Mouse.shared());
+        currentScreen.getScene().addMouseWheelListener(Mouse.shared());
 
         container.setVisible(true);
     }

@@ -82,7 +82,11 @@ public class GameObject {
 
     public void draw(Graphics2D g) {
         if (view != null) {
-            view.draw(getLocation().sub(getScene().getCamera().getLocation()), g);
+            if (zIndex == -1) {
+                view.draw(getLocation(), g);
+            } else {
+                view.draw(getLocation().sub(getScene().getCamera().getLocation()), g);
+            }
         }
     }
 

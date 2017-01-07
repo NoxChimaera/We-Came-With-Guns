@@ -16,8 +16,6 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.interfaces.DrawableComponent;
-import com.github.noxchimaera.massacre.engine.interfaces.DrawableObject;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 import com.github.noxchimaera.massacre.engine.views.View;
 

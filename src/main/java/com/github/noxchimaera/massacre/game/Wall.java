@@ -14,44 +14,31 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.actors;
+package com.github.noxchimaera.massacre.game;
 
+import com.github.noxchimaera.massacre.engine.GameTime;
+import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
-import com.github.noxchimaera.massacre.engine.interfaces.UpdatableObject;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Max Balushkin
  */
-public abstract class Actor implements UpdatableObject {
+public class Wall extends Actor {
 
-    private boolean enabled = true;
+    public Wall(GameObject gameObject) {
+        super(gameObject);
 
-    protected GameObject gameObject;
-    protected List<Collider> colliders;
+        float x = gameObject.getLocation().x();
+        float y = gameObject.getLocation().y();
+        float w = gameObject.getView().getSize().x();
+        float h = gameObject.getView().getSize().y();
 
-    public Actor(GameObject gameObject) {
-        this.gameObject = gameObject;
-        colliders = new ArrayList<>();
+        Collider collider = new Collider(x, y, w, h);
+        colliders.add(collider);
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public GameObject getGameObject() {
-        return gameObject;
-    }
-
-    public List<Collider> getColliders() {
-        return colliders;
+    @Override public void update(GameTime gameTime) {
     }
 
 }

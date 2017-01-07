@@ -16,7 +16,8 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.GameObjectOld;
+import com.github.noxchimaera.massacre.engine.actors.Actor;
+import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 
 import javax.swing.*;
@@ -30,12 +31,13 @@ import java.util.List;
  */
 public class Scene extends JPanel {
 
+    private boolean showColliders = true;
+
     private Camera camera;
 
     private ArrayList<SceneString> strList;
-    private List<GameObject> childs;
 
-
+    private List<Actor> childs;
 
     private BufferedImage buffer;
 
@@ -50,48 +52,80 @@ public class Scene extends JPanel {
         return camera;
     }
 
-    public void addObject(GameObject obj) {
+    public void addObject(Actor obj) {
         childs.add(obj);
-    }
-
-    public GameObject getObjectByTag(String tag) {
-        for (GameObject child : childs) {
-            if (child.getTag().equals(tag)) {
-                return child;
-            }
-        }
-        return null;
     }
 
     public void addString(SceneString str) {
         strList.add(str);
     }
 
-    @Override protected void paintComponent(Graphics g) {
-        if (buffer == null) {
-            buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        }
-        camera.moveToTarget();
+    public List<Actor> getActorsOnScene() {
         Vector cam = camera.getLocation();
 
-        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
-        g2d.setColor(Color.GRAY);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
-        for (GameObject child : childs) {
-            Vector loc = child.getLocation();
-            Vector size = child.getView().getSize();
+        List<Actor> res = new ArrayList<>();
+        for (Actor child : childs) {
+            if (child.getGameObject().getView() == null) {
+                continue;
+            }
+            Vector loc = child.getGameObject().getLocation();
+            Vector size = child.getGameObject().getView().getSize();
             boolean inBounds = loc.x() + size.x() > cam.x() && loc.y() + size.y() > cam.y();
             inBounds &= loc.x() < getWidth() && loc.y() < getHeight();
             if (!inBounds) {
                 continue;
             }
-            child.draw(g2d);
+            res.add(child);
+        }
+        return childs;
+    }
+    public List<Actor> getActors() {
+        return childs;
+    }
+
+    private void drawCollider(Graphics2D g, Collider c) {
+        if (c.wasCollision()) {
+            g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.PINK);
         }
 
+        int x = (int)(c.getX() - camera.getLocation().x());
+        int y = (int)(c.getY() - camera.getLocation().y());
+        int w = (int)c.getWidth();
+        int h = (int)c.getHeight();
+
+        g.drawRect(x, y, w, h);
+        g.drawLine(x, y, x + w, y + h);
+        g.drawLine(x, y + h, x + w, y);
+
+
+//        getLocation().sub(getScene().getCamera().getLocation())
+    }
+
+    @Override protected void paintComponent(Graphics g) {
+        if (buffer == null) {
+            buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        }
+        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
+        g2d.setColor(Color.GRAY);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+        for (Actor child : getActorsOnScene()) {
+            if (!child.getGameObject().getView().isVisible()) {
+                continue;
+            }
+            child.getGameObject().draw(g2d);
+            if (showColliders) {
+                for (Collider collider : child.getColliders()) {
+                    drawCollider(g2d, collider);
+                }
+            }
+        }
         for (SceneString str : strList) {
             g2d.setColor(str.getColour());
             g2d.drawString(str.getContent(), str.getX(), str.getY());
         }
+
         g.drawImage(buffer, 0, 0, this);
     }
 

@@ -16,10 +16,14 @@
 
 package com.github.noxchimaera.massacre.engine;
 
+import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.interfaces.DrawableComponent;
 import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
 import com.github.noxchimaera.massacre.engine.interfaces.UpdatableComponent;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Max Balushkin
@@ -29,9 +33,12 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
     private Scene scene;
     private boolean running;
 
+    protected List<Actor> actors;
+
     public GameScreen() {
         scene = new Scene();
         running = true;
+        actors = new ArrayList<>();
     }
 
     public Scene getScene() {
@@ -52,7 +59,6 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
 
     @Override public void draw() {
         scene.repaint();
-//        scene.repaint();
     }
 
 }

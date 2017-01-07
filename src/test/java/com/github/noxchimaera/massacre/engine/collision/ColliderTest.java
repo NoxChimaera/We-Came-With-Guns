@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.views;
+package com.github.noxchimaera.massacre.engine.collision;
 
-import com.github.noxchimaera.massacre.engine.interfaces.DrawableObject;
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import org.junit.Test;
 
-import java.awt.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Max Balushkin
  */
-public abstract class View implements DrawableObject {
+public class ColliderTest {
 
-    protected boolean visible = true;
-
-    public boolean isVisible() {
-        return visible;
+    @Test
+    public void checkCollision() {
+        Collider a = new Collider(0, 0, 50, 50);
+        Collider b = new Collider(100, 100, 50, 50);
+        assertFalse(a.checkCollision(b));
     }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    public abstract Vector getSize();
-    public abstract Vector getOrigin();
 
 }

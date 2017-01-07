@@ -18,16 +18,15 @@ package com.github.noxchimaera.massacre.game;
 
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
-import com.github.noxchimaera.massacre.engine.controls.Keyboard;
+import com.github.noxchimaera.massacre.engine.actors.Actor;
+import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.views.RectangleView;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Random;
 
 /**
@@ -35,53 +34,55 @@ import java.util.Random;
  */
 public class StartScreen extends GameScreen {
 
-    private List<GameObject> gos = new ArrayList<>();
+    private Player player;
+    private List<Wall> walls;
 
     @Override public void draw() {
         super.draw();
     }
 
     @Override public void update(GameTime gameTime) {
-        GameObject go = getScene().getObjectByTag("player");
+        getScene().getCamera().moveToTarget();
+        getScene().getActors().forEach(i -> i.getColliders().forEach(j -> j.reset()));
 
-        double v = 150 * gameTime.getDt();
-        float x = go.getLocation().x();
-        float y = go.getLocation().y();
+        List<Actor> as = getScene().getActorsOnScene();
+        for (Actor a : as) {
+            for (Collider player_c : player.getColliders()) {
+                for (Collider actor_c : a.getColliders()) {
+                    actor_c.checkCollision(player_c);
+                }
+            }
+        }
 
-        if (Keyboard.shared().isPressed(KeyEvent.VK_UP)) {
-            y -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN)) {
-            y += v;
-        }
-        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT)) {
-            x -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT)) {
-            x += v;
-        }
-        go.setLocation(x, y);
+        player.update(gameTime);
     }
 
     @Override public void initialize() {
-        GameObject go = new GameObject(getScene(), "player");
-        go.setLocation(10, 10);
-        go.setView(new RectangleView(50, 50, Color.BLUE));
-        gos.add(go);
+        final Scene scene = getScene();
+        GameObject player_go = new GameObject(scene, "player");
+        player_go.setLocation(10, 10);
+        player_go.setView(new RectangleView(50, 50, Color.GREEN));
+        player = new Player(player_go);
+        actors.add(player);
 
+        walls = new ArrayList<>();
         Random r = new Random();
-
         for (int i = 0; i < 1000; i += 32) {
-            GameObject g = new GameObject(getScene(), "wall");
-            g.setLocation(i, 100);
-            g.setView(new RectangleView(32, 16, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat())));
-            gos.add(g);
+            GameObject wall_go = new GameObject(scene, "wall");
+            wall_go.setLocation(i, 100);
+            wall_go.setView(new RectangleView(32, 16,
+                new Color(r.nextFloat(), r.nextFloat(), r.nextFloat())));
+            Wall wall = new Wall(wall_go);
+            walls.add(wall);
+        }
+        actors.addAll(walls);
+
+        for (Actor actor : actors) {
+            scene.addObject(actor);
         }
 
-        for (GameObject gameObject : gos) {
-            getScene().addObject(gameObject);
-        }
-
-        getScene().getCamera().setOrigin(go);
-
-        getScene().addString(new Scene.SceneString("Some text", 100, 100, Color.RED));
+        scene.getCamera().setOrigin(player_go);
+        scene.addString(new Scene.SceneString("Test scene", 50, 50, Color.RED));
     }
+
 }

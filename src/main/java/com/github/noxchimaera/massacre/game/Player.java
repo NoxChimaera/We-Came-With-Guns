@@ -59,10 +59,10 @@ public class Player extends Actor {
         float w = gameObject.getView().getSize().x();
         float h = gameObject.getView().getSize().y();
 
-        collider_top.setLocation(x,y - 2);
+        collider_top.setLocation(x,y - 3);
         collider_right.setLocation(x + w + 2, y);
         collider_bottom.setLocation(x, y + h + 2);
-        collider_left.setLocation(x - 2, y);
+        collider_left.setLocation(x - 3, y);
     }
 
     @Override public void update(GameTime gameTime) {

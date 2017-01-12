@@ -16,6 +16,8 @@
 
 package com.github.noxchimaera.massacre.engine.collision;
 
+import com.github.noxchimaera.massacre.engine.actors.Actor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class Collider {
     private float width;
     private float height;
 
-    private List<Collider> collisions;
+    private List<Actor> collisions;
 
     public Collider(float x, float y, float w, float h) {
         this.x = x;
@@ -87,11 +89,6 @@ public class Collider {
             || x + width < b.x
             || y > b.y + b.height
             || y + height < b.y);
-
-        if (collides) {
-            collisions.add(b);
-            b.addCollision(this);
-        }
         return collides;
     }
 
@@ -99,11 +96,11 @@ public class Collider {
         return collisions.size() != 0;
     }
 
-    public void addCollision(Collider collision) {
+    public void addCollision(Actor collision) {
         collisions.add(collision);
     }
 
-    public List<Collider> getCollisions() {
+    public List<Actor> getCollisions() {
         return new ArrayList<>(collisions);
     }
 

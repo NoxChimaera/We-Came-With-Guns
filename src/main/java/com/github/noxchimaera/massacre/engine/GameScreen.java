@@ -77,24 +77,17 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
         scene.getCamera().moveToTarget();
         actors.forEach(i -> i.getColliders().forEach(j -> j.reset()));
 
-        List<Collider> enabled = actors.stream()
-            .filter(i -> i.isEnabled())
-            .map(i -> i.getColliders())
-            .reduce(new ArrayList<>(), (colliders, colliders2) -> {
-                colliders.addAll(colliders2);
-                return colliders;
-            });
-        List<Collider> active = actors.stream()
-            .filter(i -> i.isEnabled() && !i.isFixed())
-            .map(i -> i.getColliders())
-            .reduce(new ArrayList<>(), (colliders, colliders2) -> {
-                colliders.addAll(colliders2);
-                return colliders;
-            });
-
-        enabled.stream().forEach(i -> {
-            active.stream().forEach(j -> i.checkCollision(j));
-        });
+        for (Actor a1 : actors) {
+            if (!a1.isEnabled() || a1.isFixed()) {
+                continue;
+            }
+            for (Actor a2 : actors) {
+                if (a1 == a2 || !a2.isEnabled()) {
+                    continue;
+                }
+                a1.checkCollision(a2);
+            }
+        }
 
         actors.stream()
             .filter(i -> i.isEnabled())

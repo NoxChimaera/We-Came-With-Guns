@@ -67,6 +67,18 @@ public abstract class Actor implements UpdatableObject {
         this.fixed = fixed;
     }
 
+    public void checkCollision(Actor a) {
+        for (Collider c1 : colliders) {
+            for (Collider c2 : a.getColliders()) {
+                boolean collides = c1.checkCollision(c2);
+                if (collides) {
+                    c1.addCollision(a);
+                    c2.addCollision(this);
+                }
+            }
+        }
+    }
+
     public GameObject getGameObject() {
         return gameObject;
     }

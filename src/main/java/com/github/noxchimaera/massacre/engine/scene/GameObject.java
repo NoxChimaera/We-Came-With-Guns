@@ -52,6 +52,10 @@ public class GameObject {
         this.y = y;
     }
 
+    public Vector getOrigin() {
+        return getLocation().add(getView().getOrigin());
+    }
+
     public void setX(float x) {
         this.x = x;
     }

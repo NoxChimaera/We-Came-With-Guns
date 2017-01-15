@@ -34,6 +34,11 @@ public class Player extends Actor {
     private Collider collider_bottom;
     private Collider collider_left;
 
+    private final float COLLIDER_OFFSET = 2;
+    private final float COLLIDER_SAFE = 2;
+
+    private float speed = 150;
+
     public Player(GameObject gameObject) {
         super(gameObject, false, "player");
 
@@ -43,13 +48,17 @@ public class Player extends Actor {
         float w = gameObject.getView().getSize().x();
         float h = gameObject.getView().getSize().y();
 
-        collider_top = new Collider(x, y - 2, w, 1);
+        collider_top = new Collider(x + COLLIDER_SAFE, y - COLLIDER_OFFSET,
+            w - COLLIDER_OFFSET - COLLIDER_SAFE - 1, 1);
         colliders.add(collider_top);
-        collider_right = new Collider(x + w + 2, y, 1, h);
+        collider_right = new Collider(x + w + COLLIDER_OFFSET, y + COLLIDER_OFFSET + COLLIDER_SAFE,
+            1, h - COLLIDER_OFFSET - COLLIDER_SAFE - 1);
         colliders.add(collider_right);
-        collider_bottom = new Collider(x, y + h + 2, w, 1);
+        collider_bottom = new Collider(x + COLLIDER_SAFE, y + h + COLLIDER_OFFSET,
+            w - COLLIDER_OFFSET - COLLIDER_SAFE - 1, 1);
         colliders.add(collider_bottom);
-        collider_left = new Collider(x - 2, y, 1, h);
+        collider_left = new Collider(x - COLLIDER_OFFSET, y,
+            1, h - COLLIDER_OFFSET - COLLIDER_SAFE - 1);
         colliders.add(collider_left);
     }
 
@@ -59,29 +68,25 @@ public class Player extends Actor {
         float w = gameObject.getView().getSize().x();
         float h = gameObject.getView().getSize().y();
 
-        collider_top.setLocation(x,y - 3);
-        collider_right.setLocation(x + w + 2, y);
-        collider_bottom.setLocation(x, y + h + 2);
-        collider_left.setLocation(x - 3, y);
+        collider_top.setLocation(x + COLLIDER_SAFE,y - COLLIDER_OFFSET - 1);
+        collider_right.setLocation(x + w + COLLIDER_OFFSET - 1, y + COLLIDER_SAFE);
+        collider_bottom.setLocation(x + COLLIDER_SAFE, y + h + COLLIDER_OFFSET - 1);
+        collider_left.setLocation(x - COLLIDER_OFFSET - 1, y + COLLIDER_SAFE);
     }
 
     @Override public void update(GameTime gameTime) {
-        float v = 150 * (float)gameTime.getDt();
+        float v = (Keyboard.shared().isPressed(KeyEvent.VK_SHIFT) ? 300 : 150) * (float)gameTime.getDt();
         float x = gameObject.getLocation().x();
         float y = gameObject.getLocation().y();
 
-        if (colliders.stream().filter(i -> i.wasCollision()).count() > 0) {
-            System.out.println("Collided");
-        }
-
-        if (Keyboard.shared().isPressed(KeyEvent.VK_UP) && !collider_top.wasCollision()) {
+        if (Keyboard.shared().isPressed(KeyEvent.VK_UP, KeyEvent.VK_W) && !collider_top.wasCollision()) {
             y -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN) && !collider_bottom.wasCollision()) {
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN, KeyEvent.VK_S) && !collider_bottom.wasCollision()) {
             y += v;
         }
-        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT) && !collider_left.wasCollision()) {
+        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT, KeyEvent.VK_A) && !collider_left.wasCollision()) {
             x -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT) && !collider_right.wasCollision()) {
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT, KeyEvent.VK_D) && !collider_right.wasCollision()) {
             x += v;
         }
         gameObject.setLocation(x, y);

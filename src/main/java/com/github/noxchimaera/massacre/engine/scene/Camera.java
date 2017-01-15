@@ -16,7 +16,6 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.GameObjectOld;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 
 /**

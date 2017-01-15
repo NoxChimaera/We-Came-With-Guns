@@ -26,7 +26,8 @@ import com.github.noxchimaera.massacre.engine.scene.GameObject;
  */
 public class Wall extends Actor {
 
-
+    private int health = 100;
+    private boolean collisionFlag = false;
 
     public Wall(GameObject gameObject) {
         super(gameObject, true, "wall");
@@ -41,6 +42,15 @@ public class Wall extends Actor {
     }
 
     @Override public void update(GameTime gameTime) {
+        if (wasCollision() && !collisionFlag) {
+            collisionFlag = true;
+            health -= 25;
+            if (health <= 0) {
+                setEnabled(false);
+            }
+        } else if (!wasCollision() && collisionFlag) {
+            collisionFlag = false;
+        }
     }
 
 }

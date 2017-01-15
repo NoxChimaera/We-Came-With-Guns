@@ -44,6 +44,15 @@ public class Keyboard extends KeyAdapter {
         return keys.contains(keyCode);
     }
 
+    public boolean isPressed(int ... keyCode) {
+        for (Integer key : keyCode) {
+            if (keys.contains(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override public void keyPressed(KeyEvent e) {
         keys.add(e.getKeyCode());
     }

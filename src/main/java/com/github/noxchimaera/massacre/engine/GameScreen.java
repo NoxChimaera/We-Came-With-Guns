@@ -73,12 +73,23 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
         return null;
     }
 
+    public List<Actor> getActorsByTag(String tag) {
+        return actors.stream()
+            .filter(i -> i.getTag().equals(tag))
+            .collect(Collectors.toList());
+    }
+
     @Override public void update(GameTime gameTime) {
         scene.getCamera().moveToTarget();
+        actors.removeIf(i -> i.isReadyToDestroy());
         actors.forEach(i -> i.getColliders().forEach(j -> j.reset()));
 
         for (Actor a1 : actors) {
-            if (!a1.isEnabled() || a1.isFixed()) {
+            if (!a1.isEnabled()) {
+                continue;
+            }
+
+            if (a1.isFixed()) {
                 continue;
             }
             for (Actor a2 : actors) {

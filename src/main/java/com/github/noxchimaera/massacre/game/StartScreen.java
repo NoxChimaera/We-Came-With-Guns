@@ -18,13 +18,16 @@ package com.github.noxchimaera.massacre.game;
 
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
+import com.github.noxchimaera.massacre.engine.controls.Mouse;
 import com.github.noxchimaera.massacre.engine.models.Vector;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.scene.ZIndex;
 import com.github.noxchimaera.massacre.engine.views.RectangleView;
+import com.github.noxchimaera.massacre.game.factories.BulletFactory;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +38,7 @@ import java.util.Random;
 public class StartScreen extends GameScreen {
 
     private Player player;
+    private Cursor cursor;
     private List<Wall> walls;
 
     @Override public void draw() {
@@ -43,6 +47,19 @@ public class StartScreen extends GameScreen {
 
     @Override public void update(GameTime gameTime) {
         super.update(gameTime);
+
+        if (Mouse.shared().isPressed(MouseEvent.BUTTON1)) {
+            if (getActorsByTag("bullet").size() < 1000) {
+                Vector mouse = cursor.getGameObject().getOrigin();
+                Vector loc = player.getGameObject().getOrigin();
+                Vector dir = mouse.sub(loc.sub(getScene().getCamera().getLocation())).unit();
+
+                Bullet bullet = BulletFactory.create(getScene(), dir);
+                bullet.getGameObject().setLocation(player.getGameObject().getOrigin());
+                actors.add(bullet);
+            }
+        }
+
     }
 
     @Override public void initialize() {
@@ -69,7 +86,7 @@ public class StartScreen extends GameScreen {
         cursor_go.setLocation(0, 0);
         cursor_go.setView(new RectangleView(10, 10, Color.WHITE));
         cursor_go.setZIndex(ZIndex.GUI);
-        Cursor cursor = new Cursor(cursor_go);
+        cursor = new Cursor(cursor_go);
         actors.add(cursor);
 
         scene.getCamera().setOrigin(player_go);

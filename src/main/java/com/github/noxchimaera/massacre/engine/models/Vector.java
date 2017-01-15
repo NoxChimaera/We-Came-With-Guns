@@ -24,6 +24,11 @@ public class Vector {
     private float x;
     private float y;
 
+    public Vector(Vector vector) {
+        x = vector.x();
+        y = vector.y();
+    }
+
     public Vector(float x, float y) {
         this.x = x;
         this.y = y;
@@ -51,6 +56,26 @@ public class Vector {
 
     public Vector add(Vector b) {
         return new Vector(x + b.x(), y + b.y());
+    }
+
+    public Vector mul(Vector b) {
+        return new Vector(x * b.x(), y * b.y());
+    }
+
+    public Vector mul(float multiplier) {
+        return new Vector(x * multiplier, y * multiplier);
+    }
+
+    public Vector div(float divider) {
+        return new Vector(x / divider, y / divider);
+    }
+
+    public double norm() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public Vector unit() {
+        return div((float)norm());
     }
 
     @Override public String toString() {

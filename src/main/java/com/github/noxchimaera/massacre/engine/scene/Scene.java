@@ -69,8 +69,10 @@ public class Scene extends JPanel {
         return res;
     }
 
-    private void drawCollider(Graphics2D g, Collider c) {
-        if (c.wasCollision()) {
+    private void drawCollider(Graphics2D g, Collider c, boolean isActorEnabled) {
+        if (!isActorEnabled) {
+            g.setColor(Color.BLACK);
+        } else if (c.wasCollision()) {
             g.setColor(Color.RED);
         } else {
             g.setColor(Color.PINK);
@@ -93,6 +95,7 @@ public class Scene extends JPanel {
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, getWidth(), getHeight());
+
         for (Actor child : getActorsOnScene()) {
             if (!child.getGameObject().getView().isVisible()) {
                 continue;
@@ -100,7 +103,7 @@ public class Scene extends JPanel {
             child.getGameObject().draw(g2d);
             if (showColliders) {
                 for (Collider collider : child.getColliders()) {
-                    drawCollider(g2d, collider);
+                    drawCollider(g2d, collider, child.isEnabled());
                 }
             }
         }

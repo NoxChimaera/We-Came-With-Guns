@@ -29,6 +29,7 @@ import java.util.List;
 public abstract class Actor implements UpdatableObject {
 
     private boolean enabled = true;
+    private boolean readyToDestroy = false;
     private boolean fixed;
 
     private String tag;
@@ -85,6 +86,21 @@ public abstract class Actor implements UpdatableObject {
 
     public List<Collider> getColliders() {
         return colliders;
+    }
+
+    public boolean isReadyToDestroy() {
+        return readyToDestroy;
+    }
+
+    public void setReadyToDestroy(boolean readyToDestroy) {
+        this.readyToDestroy = readyToDestroy;
+    }
+
+    public boolean wasCollision() {
+        return getColliders().stream()
+            .filter(i -> i.wasCollision())
+            .findFirst()
+            .isPresent();
     }
 
 }

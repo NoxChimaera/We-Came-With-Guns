@@ -18,7 +18,6 @@ package com.github.noxchimaera.massacre.engine;
 
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
 import com.github.noxchimaera.massacre.engine.controls.Mouse;
-import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +25,7 @@ import java.awt.*;
 /**
  * @author Max Balushkin
  */
-public class Game implements InitializableComponent {
+public class Game {
 
     private String gameTitle = "The Game";
 
@@ -46,7 +45,15 @@ public class Game implements InitializableComponent {
         this.currentScreen = currentScreen;
     }
 
-    @Override public void initialize() {
+    public String getGameTitle() {
+        return gameTitle;
+    }
+
+    public void setGameTitle(String gameTitle) {
+        this.gameTitle = gameTitle;
+    }
+
+    public void initialize() {
         JFrame container = new JFrame();
         container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         container.setSize(screenSize);
@@ -87,7 +94,7 @@ public class Game implements InitializableComponent {
                 nextTime += delta;
                 currentScreen.update(new GameTime(delta));
                 if (curTime < nextTime || skippedFrames > maxSkippedFrames) {
-                    // Time to draw the scene
+                    // Time to predraw the scene
                     currentScreen.draw();
                     skippedFrames = 1;
                 } else {

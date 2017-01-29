@@ -21,7 +21,7 @@ import com.github.noxchimaera.massacre.engine.GameTime;
 /**
  * @author Max Balushkin
  */
-public interface UpdatableObject {
+public interface Updatable {
 
     void update(GameTime gameTime);
 

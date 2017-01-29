@@ -17,7 +17,7 @@
 package com.github.noxchimaera.massacre.engine.collision;
 
 import com.github.noxchimaera.massacre.engine.actors.Actor;
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class Collider {
         this.y = y;
     }
 
-    public void setLocation(Vector location) {
+    public void setLocation(Vector2 location) {
         x = location.x();
         y = location.y();
     }

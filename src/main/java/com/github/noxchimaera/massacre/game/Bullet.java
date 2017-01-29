@@ -17,9 +17,9 @@
 package com.github.noxchimaera.massacre.game;
 
 import com.github.noxchimaera.massacre.engine.GameTime;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
-import com.github.noxchimaera.massacre.engine.models.Vector;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 
 /**
@@ -27,18 +27,19 @@ import com.github.noxchimaera.massacre.engine.scene.GameObject;
  */
 public class Bullet extends Actor {
 
-    private Vector direction;
-    private float speed = 100;
+    private Vector2 direction;
+    private float speed = 300;
 
     private Collider collider;
 
     private double distance = 0;
 
-    public Bullet(GameObject gameObject, Vector direction) {
+    public Bullet(GameObject gameObject, Vector2 direction) {
         super(gameObject, false, "bullet");
         this.direction = direction;
 
-        collider = new Collider(0, 0, 4, 4);
+        Vector2 size = gameObject.getView().getSize();
+        collider = new Collider(0, 0, size.x(), size.y());
         getColliders().add(collider);
     }
 
@@ -60,8 +61,8 @@ public class Bullet extends Actor {
             setReadyToDestroy(true);
         }
 
-        Vector dir = direction.mul(speed * (float)gameTime.getDt());
-        Vector location = getGameObject().getLocation();
+        Vector2 dir = direction.mul(speed * (float)gameTime.getDt());
+        Vector2 location = getGameObject().getLocation();
         getGameObject().setLocation(location.add(dir));
         updateCollider();
         distance += dir.norm();

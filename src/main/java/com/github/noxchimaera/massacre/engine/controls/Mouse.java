@@ -16,7 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.controls;
 
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -62,8 +62,8 @@ public class Mouse extends MouseAdapter {
         wheelRotation = e.getWheelRotation();
     }
 
-    public Vector getLocation() {
-        return new Vector(x, y);
+    public Vector2 getLocation() {
+        return new Vector2(x, y);
     }
 
     @Override public void mouseMoved(MouseEvent e) {

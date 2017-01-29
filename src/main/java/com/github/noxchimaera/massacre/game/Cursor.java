@@ -19,7 +19,7 @@ package com.github.noxchimaera.massacre.game;
 import com.github.noxchimaera.massacre.engine.GameTime;
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.controls.Mouse;
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 
 /**
@@ -32,7 +32,7 @@ public class Cursor extends Actor {
     }
 
     @Override public void update(GameTime gameTime) {
-        Vector origin = getGameObject().getView().getOrigin();
+        Vector2 origin = getGameObject().getView().getOrigin();
         gameObject.setLocation(Mouse.shared().getLocation().sub(origin));
     }
 

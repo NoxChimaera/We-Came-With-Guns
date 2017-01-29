@@ -18,13 +18,14 @@ package com.github.noxchimaera.massacre.game;
 
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.controls.Mouse;
-import com.github.noxchimaera.massacre.engine.models.Vector;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.scene.ZIndex;
 import com.github.noxchimaera.massacre.engine.views.RectangleView;
 import com.github.noxchimaera.massacre.game.factories.BulletFactory;
+import com.github.noxchimaera.massacre.game.factories.PlayerBuilder;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -50,9 +51,9 @@ public class StartScreen extends GameScreen {
 
         if (Mouse.shared().isPressed(MouseEvent.BUTTON1)) {
             if (getActorsByTag("bullet").size() < 1000) {
-                Vector mouse = cursor.getGameObject().getOrigin();
-                Vector loc = player.getGameObject().getOrigin();
-                Vector dir = mouse.sub(loc.sub(getScene().getCamera().getLocation())).unit();
+                Vector2 mouse = cursor.getGameObject().getOrigin();
+                Vector2 loc = player.getGameObject().getOrigin();
+                Vector2 dir = mouse.sub(loc.sub(getScene().getCamera().getLocation())).unit();
 
                 Bullet bullet = BulletFactory.create(getScene(), dir);
                 bullet.getGameObject().setLocation(player.getGameObject().getOrigin());
@@ -62,12 +63,13 @@ public class StartScreen extends GameScreen {
 
     }
 
-    @Override public void initialize() {
+    public void initialize() {
         final Scene scene = getScene();
-        GameObject player_go = new GameObject(scene);
-        player_go.setLocation(10, 10);
-        player_go.setView(new RectangleView(50, 50, Color.GREEN));
-        player = new Player(player_go);
+        player = new PlayerBuilder().build(scene, new Vector2(10, 10));
+//        GameObject player_go = new GameObject(scene);
+//        player_go.setLocation(10, 10);
+//        player_go.setView(new RectangleView(50, 50, Color.GREEN));
+//        player = new Player(player_go);
         actors.add(player);
 
         walls = new ArrayList<>();
@@ -89,7 +91,7 @@ public class StartScreen extends GameScreen {
         cursor = new Cursor(cursor_go);
         actors.add(cursor);
 
-        scene.getCamera().setOrigin(player_go);
+        scene.getCamera().setOrigin(player.getGameObject());
     }
 
 }

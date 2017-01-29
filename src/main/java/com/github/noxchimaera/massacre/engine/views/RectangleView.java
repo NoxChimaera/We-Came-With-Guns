@@ -16,9 +16,10 @@
 
 package com.github.noxchimaera.massacre.engine.views;
 
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Max Balushkin
@@ -36,21 +37,25 @@ public class RectangleView extends View {
         this.colour = colour;
     }
 
-    @Override public Vector getSize() {
-        return new Vector(width, height);
+    @Override public Vector2 getSize() {
+        return new Vector2(width, height);
     }
 
-    @Override public Vector getOrigin() {
-        return new Vector(width / 2, height / 2);
+    @Override public Vector2 getOrigin() {
+        return new Vector2(width / 2, height / 2);
     }
 
     public Color getColour() {
         return colour;
     }
 
-    @Override public void draw(Vector loc, Graphics2D g) {
+    @Override public Image predraw() {
+        BufferedImage img = new BufferedImage(
+            (int)width, (int)height, BufferedImage.TYPE_INT_RGB);
+        Graphics g = img.getGraphics();
         g.setColor(colour);
-        g.fillRect((int)loc.x(), (int)loc.y(), (int)width, (int)height);
+        g.fillRect(0, 0, (int)width, (int)height);
+        return img;
     }
 
 }

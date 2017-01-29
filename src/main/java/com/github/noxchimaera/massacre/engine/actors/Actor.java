@@ -17,7 +17,7 @@
 package com.github.noxchimaera.massacre.engine.actors;
 
 import com.github.noxchimaera.massacre.engine.collision.Collider;
-import com.github.noxchimaera.massacre.engine.interfaces.UpdatableObject;
+import com.github.noxchimaera.massacre.engine.interfaces.Updatable;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Max Balushkin
  */
-public abstract class Actor implements UpdatableObject {
+public abstract class Actor implements Updatable {
 
     private boolean enabled = true;
     private boolean readyToDestroy = false;
@@ -35,6 +35,8 @@ public abstract class Actor implements UpdatableObject {
     private String tag;
 
     protected GameObject gameObject;
+    protected List<GameObject> childs;
+
     protected List<Collider> colliders;
 
     public Actor(GameObject gameObject, boolean isFixed) {
@@ -43,6 +45,7 @@ public abstract class Actor implements UpdatableObject {
 
     public Actor(GameObject gameObject, boolean isFixed, String tag) {
         this.gameObject = gameObject;
+        childs = new ArrayList<>();
         colliders = new ArrayList<>();
         fixed = isFixed;
         this.tag = tag;
@@ -86,6 +89,10 @@ public abstract class Actor implements UpdatableObject {
 
     public List<Collider> getColliders() {
         return colliders;
+    }
+
+    public List<GameObject> getChilds() {
+        return childs;
     }
 
     public boolean isReadyToDestroy() {

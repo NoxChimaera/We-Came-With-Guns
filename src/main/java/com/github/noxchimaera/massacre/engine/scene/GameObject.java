@@ -16,7 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.views.View;
 
 import java.awt.*;
@@ -38,11 +38,11 @@ public class GameObject {
         this.scene = scene;
     }
 
-    public Vector getLocation() {
-        return new Vector(x, y);
+    public Vector2 getLocation() {
+        return new Vector2(x, y);
     }
 
-    public void setLocation(Vector location) {
+    public void setLocation(Vector2 location) {
         x = location.x();
         y = location.y();
     }
@@ -52,7 +52,11 @@ public class GameObject {
         this.y = y;
     }
 
-    public Vector getOrigin() {
+    public void moveBy(float offsetX, float offsetY) {
+        setLocation(x + offsetX, y + offsetY);
+    }
+
+    public Vector2 getOrigin() {
         return getLocation().add(getView().getOrigin());
     }
 
@@ -86,10 +90,11 @@ public class GameObject {
 
     public void draw(Graphics2D g) {
         if (view != null) {
-            if (zIndex == -1) {
-                view.draw(getLocation(), g);
+            if (zIndex < 0) {
+                g.drawImage(view.predraw(), (int)x, (int)y, view.getSize().ix(), view.getSize().iy(), null);
             } else {
-                view.draw(getLocation().sub(getScene().getCamera().getLocation()), g);
+                Vector2 loc = getLocation().sub(getScene().getCamera().getLocation());
+                g.drawImage(view.predraw(), loc.ix(), loc.iy(), view.getSize().ix(), view.getSize().iy(), null);
             }
         }
     }

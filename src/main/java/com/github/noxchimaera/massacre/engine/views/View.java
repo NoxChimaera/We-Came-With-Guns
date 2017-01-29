@@ -16,15 +16,13 @@
 
 package com.github.noxchimaera.massacre.engine.views;
 
-import com.github.noxchimaera.massacre.engine.interfaces.DrawableObject;
-import com.github.noxchimaera.massacre.engine.models.Vector;
-
-import java.awt.*;
+import com.github.noxchimaera.massacre.engine.interfaces.Drawable;
+import com.github.noxchimaera.massacre.engine.Vector2;
 
 /**
  * @author Max Balushkin
  */
-public abstract class View implements DrawableObject {
+public abstract class View implements Drawable {
 
     protected boolean visible = true;
 
@@ -36,7 +34,7 @@ public abstract class View implements DrawableObject {
         this.visible = visible;
     }
 
-    public abstract Vector getSize();
-    public abstract Vector getOrigin();
+    public abstract Vector2 getSize();
+    public abstract Vector2 getOrigin();
 
 }

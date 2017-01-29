@@ -14,13 +14,34 @@
  * limitations under the License.
  */
 
-package com.github.noxchimaera.massacre.engine.interfaces;
+package com.github.noxchimaera.massacre.engine.views;
+
+import com.github.noxchimaera.massacre.engine.Vector2;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Max Balushkin
  */
-public interface DrawableComponent {
+public class Sprite extends View {
 
-    void draw();
+    private BufferedImage image;
+
+    public Sprite(BufferedImage image) {
+        this.image = image;
+    }
+
+    @Override public Image predraw() {
+        return image;
+    }
+
+    @Override public Vector2 getSize() {
+        return new Vector2(image.getWidth(), image.getHeight());
+    }
+
+    @Override public Vector2 getOrigin() {
+        return new Vector2(image.getWidth() / 2, image.getHeight() / 2);
+    }
 
 }

@@ -17,6 +17,8 @@
 package com.github.noxchimaera.massacre.engine.scene;
 
 /**
+ * Z-Index helper.
+ *
  * @author Max Balushkin
  */
 public class ZIndex {

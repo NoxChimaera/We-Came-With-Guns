@@ -16,13 +16,16 @@
 
 package com.github.noxchimaera.massacre.engine.interfaces;
 
-import com.github.noxchimaera.massacre.engine.GameTime;
+import com.github.noxchimaera.massacre.engine.Vector2;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Max Balushkin
  */
-public interface UpdatableComponent {
+public interface Drawable {
 
-    void update(GameTime gameTime);
+    Image predraw();
 
 }

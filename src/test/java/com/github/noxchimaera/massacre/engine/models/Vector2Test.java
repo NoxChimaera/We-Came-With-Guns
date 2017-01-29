@@ -16,6 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.models;
 
+import com.github.noxchimaera.massacre.engine.Vector2;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,42 +24,42 @@ import static org.junit.Assert.*;
 /**
  * @author Max Balushkin
  */
-public class VectorTest {
+public class Vector2Test {
 
     @Test public void sub() throws Exception {
-        Vector a = new Vector(10, 5);
-        Vector b = new Vector(1, 5);
-        Vector c = a.sub(b);
+        Vector2 a = new Vector2(10, 5);
+        Vector2 b = new Vector2(1, 5);
+        Vector2 c = a.sub(b);
         assertEquals(10 - 1, c.x(), 0.01);
         assertEquals(5 - 5, c.y(), 0.01);
     }
 
     @Test public void add() throws Exception {
-        Vector a = new Vector(1, 6);
-        Vector b = new Vector(7, 10);
-        Vector c = a.add(b);
+        Vector2 a = new Vector2(1, 6);
+        Vector2 b = new Vector2(7, 10);
+        Vector2 c = a.add(b);
         assertEquals(1 + 7, c.x(), 0.01);
         assertEquals(6 + 10, c.y(), 0.01);
     }
 
     @Test public void mul() throws Exception {
-        Vector a = new Vector(5, 4);
-        Vector b = new Vector(2, 0.5f);
-        Vector c = a.mul(b);
+        Vector2 a = new Vector2(5, 4);
+        Vector2 b = new Vector2(2, 0.5f);
+        Vector2 c = a.mul(b);
         assertEquals(5 * 2, c.x(), 0.01);
         assertEquals(4 * 0.5f, c.y(), 0.01);
     }
 
     @Test public void mul1() throws Exception {
-        Vector a = new Vector(4, 10);
-        Vector b = a.mul(0.5f);
+        Vector2 a = new Vector2(4, 10);
+        Vector2 b = a.mul(0.5f);
         assertEquals(4 * 0.5f, b.x(), 0.01);
         assertEquals(10 * 0.5f, b.y(), 0.01);
     }
 
     @Test public void unit() {
-        Vector b = new Vector(10, 0);
-        Vector c = b.unit();
+        Vector2 b = new Vector2(10, 0);
+        Vector2 c = b.unit();
         assertEquals(1, c.x(), 0.01);
     }
 

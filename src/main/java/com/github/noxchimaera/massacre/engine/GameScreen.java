@@ -18,9 +18,6 @@ package com.github.noxchimaera.massacre.engine;
 
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
-import com.github.noxchimaera.massacre.engine.interfaces.DrawableComponent;
-import com.github.noxchimaera.massacre.engine.interfaces.InitializableComponent;
-import com.github.noxchimaera.massacre.engine.interfaces.UpdatableComponent;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.game.Player;
 
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * @author Max Balushkin
  */
-public abstract class GameScreen implements InitializableComponent, UpdatableComponent, DrawableComponent {
+public abstract class GameScreen {
 
     private Scene scene;
     private boolean running;
@@ -79,7 +76,7 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
             .collect(Collectors.toList());
     }
 
-    @Override public void update(GameTime gameTime) {
+    public void update(GameTime gameTime) {
         scene.getCamera().moveToTarget();
         actors.removeIf(i -> i.isReadyToDestroy());
         actors.forEach(i -> i.getColliders().forEach(j -> j.reset()));
@@ -105,8 +102,10 @@ public abstract class GameScreen implements InitializableComponent, UpdatableCom
             .forEach(i -> i.update(gameTime));
     }
 
-    @Override public void draw() {
+    public void draw() {
         scene.repaint();
     }
+
+    public abstract void initialize();
 
 }

@@ -16,23 +16,37 @@
 
 package com.github.noxchimaera.massacre.game.factories;
 
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.Main;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
-import com.github.noxchimaera.massacre.engine.views.RectangleView;
+import com.github.noxchimaera.massacre.engine.views.Sprite;
 import com.github.noxchimaera.massacre.engine.views.View;
 import com.github.noxchimaera.massacre.game.Bullet;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * @author Max Balushkin
  */
 public class BulletFactory {
 
-    public static Bullet create(Scene scene, Vector direction) {
+    private static BufferedImage bulletImg;
+
+    static {
+        try {
+            bulletImg = ImageIO.read(Main.class.getResource("/sprites/hand_white.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Bullet create(Scene scene, Vector2 direction) {
         GameObject bullet_go = new GameObject(scene);
-        View bullet_view = new RectangleView(4, 4, Color.RED);
+        View bullet_view = new Sprite(bulletImg);
+//        View bullet_view = new RectangleView(16, 16, Color.RED);
         bullet_go.setView(bullet_view);
         return new Bullet(bullet_go, direction);
     }

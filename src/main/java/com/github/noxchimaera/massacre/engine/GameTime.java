@@ -17,16 +17,28 @@
 package com.github.noxchimaera.massacre.engine;
 
 /**
+ * Represents game time.
+ *
  * @author Max Balushkin
  */
 public class GameTime {
 
     private final double dt;
 
+    /**
+     * Creates new game time.
+     *
+     * @param dt time between frames
+     */
     public GameTime(double dt) {
         this.dt = dt;
     }
 
+    /**
+     * Returns time between last frame and current.
+     *
+     * @return time delta
+     */
     public double getDt() {
         return dt;
     }

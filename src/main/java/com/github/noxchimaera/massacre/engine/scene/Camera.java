@@ -16,14 +16,14 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
-import com.github.noxchimaera.massacre.engine.models.Vector;
+import com.github.noxchimaera.massacre.engine.Vector2;
 
 /**
  * @author Max Balushkin
  */
 public class Camera {
 
-    private Vector location;
+    private Vector2 location;
 
     private Scene parent;
     private GameObject origin;
@@ -32,7 +32,7 @@ public class Camera {
         this.parent = parent;
     }
 
-    public Vector getLocation() {
+    public Vector2 getLocation() {
         return location;
     }
 
@@ -48,10 +48,10 @@ public class Camera {
         int w = parent.getWidth();
         int h = parent.getHeight();
 
-        Vector o = origin.getView() != null
+        Vector2 o = origin.getView() != null
             ? origin.getLocation().add(origin.getView().getOrigin())
             : origin.getLocation();
-        location = new Vector(o.x() - w / 2, o.y() - h / 2);
+        location = new Vector2(o.x() - w / 2, o.y() - h / 2);
     }
 
 }

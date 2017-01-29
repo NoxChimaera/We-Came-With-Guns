@@ -32,14 +32,9 @@ public class Main {
         StartScreen s = new StartScreen();
 
         Game g = new Game(s);
+//        g.setGameTitle("We Came With Guns");
         g.initialize();
         g.run();
-
-
-
-//        Application app = new Application();
-//        app.setVisible(true);
-
     }
 
 }

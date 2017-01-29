@@ -20,6 +20,7 @@ import com.github.noxchimaera.massacre.engine.GameTime;
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 
 import java.awt.event.KeyEvent;
@@ -74,23 +75,36 @@ public class Player extends Actor {
         collider_left.setLocation(x - COLLIDER_OFFSET - 1, y + COLLIDER_SAFE);
     }
 
+    private boolean wasCollision(Collider collider) {
+        return collider.getCollisions().stream()
+            .filter(i -> !i.getTag().equals("bullet"))
+            .count() != 0;
+    }
+
     @Override public void update(GameTime gameTime) {
         float v = (Keyboard.shared().isPressed(KeyEvent.VK_SHIFT) ? 300 : 150) * (float)gameTime.getDt();
+        Vector2 oldLoc = gameObject.getLocation();
         float x = gameObject.getLocation().x();
         float y = gameObject.getLocation().y();
 
-        if (Keyboard.shared().isPressed(KeyEvent.VK_UP, KeyEvent.VK_W) && !collider_top.wasCollision()) {
+        if (Keyboard.shared().isPressed(KeyEvent.VK_UP, KeyEvent.VK_W) && !wasCollision(collider_top)) {
             y -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN, KeyEvent.VK_S) && !collider_bottom.wasCollision()) {
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN, KeyEvent.VK_S) && !wasCollision(collider_bottom)) {
             y += v;
         }
-        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT, KeyEvent.VK_A) && !collider_left.wasCollision()) {
+        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT, KeyEvent.VK_A) && !wasCollision(collider_left)) {
             x -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT, KeyEvent.VK_D) && !collider_right.wasCollision()) {
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT, KeyEvent.VK_D) && !wasCollision(collider_right)) {
             x += v;
         }
         gameObject.setLocation(x, y);
         updateColliders();
+
+        float offX = x - oldLoc.x();
+        float offY = y - oldLoc.y();
+        for (GameObject child : childs) {
+            child.moveBy(offX, offY);
+        }
     }
 
 }

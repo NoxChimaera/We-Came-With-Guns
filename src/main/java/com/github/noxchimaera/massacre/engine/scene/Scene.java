@@ -17,9 +17,9 @@
 package com.github.noxchimaera.massacre.engine.scene;
 
 import com.github.noxchimaera.massacre.engine.GameScreen;
+import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
-import com.github.noxchimaera.massacre.engine.models.Vector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,15 +50,15 @@ public class Scene extends JPanel {
     }
 
     public List<Actor> getActorsOnScene() {
-        Vector cam = camera.getLocation();
+        Vector2 cam = camera.getLocation();
 
         List<Actor> res = new ArrayList<>();
         for (Actor child : screen.getActors()) {
             if (child.getGameObject().getView() == null) {
                 continue;
             }
-            Vector loc = child.getGameObject().getLocation();
-            Vector size = child.getGameObject().getView().getSize();
+            Vector2 loc = child.getGameObject().getLocation();
+            Vector2 size = child.getGameObject().getView().getSize();
             boolean inBounds = loc.x() + size.x() > cam.x() && loc.y() + size.y() > cam.y();
             inBounds &= loc.x() < getWidth() && loc.y() < getHeight();
             if (!inBounds) {
@@ -100,6 +100,7 @@ public class Scene extends JPanel {
             if (!child.getGameObject().getView().isVisible()) {
                 continue;
             }
+            child.getChilds().forEach(i -> i.draw(g2d));
             child.getGameObject().draw(g2d);
             if (showColliders) {
                 for (Collider collider : child.getColliders()) {

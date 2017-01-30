@@ -25,7 +25,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Max Balushkin
@@ -39,6 +41,10 @@ public class Scene extends JPanel {
     private BufferedImage buffer;
 
     private boolean showColliders = true;
+
+    public void toggleDebugMode() {
+        showColliders = !showColliders;
+    }
 
     public Scene(GameScreen screen) {
         this.screen = screen;
@@ -96,18 +102,25 @@ public class Scene extends JPanel {
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Actor child : getActorsOnScene()) {
-            if (!child.getGameObject().getView().isVisible()) {
-                continue;
-            }
-            child.getChilds().forEach(i -> i.draw(g2d));
-            child.getGameObject().draw(g2d);
-            if (showColliders) {
-                for (Collider collider : child.getColliders()) {
-                    drawCollider(g2d, collider, child.isEnabled());
+        List<Actor> onScene = getActorsOnScene();
+        List<GameObject> gos = new ArrayList<>();
+        for (Actor actor : onScene) {
+            gos.add(actor.getGameObject());
+            gos.addAll(actor.getChilds());
+        }
+        gos.sort(Comparator.comparingInt(GameObject::getZIndex));
+        for (GameObject go : gos) {
+            go.draw(g2d);
+        }
+
+        if (showColliders) {
+            for (Actor actor : onScene) {
+                for (Collider collider : actor.getColliders()) {
+                    drawCollider(g2d, collider, actor.isEnabled());
                 }
             }
         }
+
         g.drawImage(buffer, 0, 0, this);
     }
 

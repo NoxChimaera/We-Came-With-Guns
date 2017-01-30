@@ -16,6 +16,7 @@
 
 package com.github.noxchimaera.massacre.engine.scene;
 
+import com.github.noxchimaera.massacre.engine.GameTime;
 import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.views.View;
 

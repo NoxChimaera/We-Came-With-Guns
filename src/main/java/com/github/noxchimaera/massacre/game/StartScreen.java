@@ -19,6 +19,7 @@ package com.github.noxchimaera.massacre.game;
 import com.github.noxchimaera.massacre.engine.GameScreen;
 import com.github.noxchimaera.massacre.engine.GameTime;
 import com.github.noxchimaera.massacre.engine.Vector2;
+import com.github.noxchimaera.massacre.engine.controls.Keyboard;
 import com.github.noxchimaera.massacre.engine.controls.Mouse;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
@@ -28,6 +29,7 @@ import com.github.noxchimaera.massacre.game.factories.BulletFactory;
 import com.github.noxchimaera.massacre.game.factories.PlayerBuilder;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,10 @@ public class StartScreen extends GameScreen {
                 bullet.getGameObject().setLocation(player.getGameObject().getOrigin());
                 actors.add(bullet);
             }
+        }
+
+        if (Keyboard.shared().isPressed(KeyEvent.VK_SPACE)) {
+             getScene().toggleDebugMode();
         }
 
     }

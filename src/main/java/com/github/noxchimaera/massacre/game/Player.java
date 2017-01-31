@@ -22,6 +22,7 @@ import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
 import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
+import com.github.noxchimaera.massacre.engine.views.AutomataView;
 
 import java.awt.event.KeyEvent;
 
@@ -102,6 +103,13 @@ public class Player extends Actor {
 
         float offX = x - oldLoc.x();
         float offY = y - oldLoc.y();
+
+        if (offX != 0 || offY != 0) {
+            ((AutomataView)getGameObject().getView()).setState("walk");
+        } else {
+            ((AutomataView)getGameObject().getView()).setState("idle");
+        }
+
         for (GameObject child : childs) {
             child.moveBy(offX, offY);
         }

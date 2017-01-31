@@ -21,10 +21,7 @@ import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
 import com.github.noxchimaera.massacre.engine.utils.Spritesheet;
-import com.github.noxchimaera.massacre.engine.views.Animation;
-import com.github.noxchimaera.massacre.engine.views.RectangleView;
-import com.github.noxchimaera.massacre.engine.views.Sprite;
-import com.github.noxchimaera.massacre.engine.views.View;
+import com.github.noxchimaera.massacre.engine.views.*;
 import com.github.noxchimaera.massacre.game.Player;
 
 import javax.imageio.ImageIO;
@@ -48,11 +45,17 @@ public class PlayerBuilder {
 
         Sprite head_view = new Sprite(player_ss.clip(160, 0, 235, 50));
 
-        Animation player_view = new Animation(500);
+
+        Animation walk_anim = new Animation(500);
         Sprite player_down_idle = new Sprite(player_ss.clip(0, 55, 60, 105));
         Sprite player_down_stepr = new Sprite(player_ss.clip(65, 55, 125,105));
         Sprite player_down_stepl = new Sprite(player_ss.clip(130, 55, 190, 105));
-        player_view.addFrame(player_down_idle, player_down_stepl, player_down_idle, player_down_stepr);
+        walk_anim.addFrame(player_down_idle, player_down_stepl, player_down_idle, player_down_stepr);
+
+        AutomataView player_view = new AutomataView();
+        player_view.addState("idle", player_down_idle);
+        player_view.addState("walk", walk_anim);
+        player_view.setState("idle");
 
         player_go.setView(player_view);
         Player p = new Player(player_go);

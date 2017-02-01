@@ -43,8 +43,16 @@ public class PlayerBuilder {
             throw new RuntimeException("Can't load player.gif");
         }
 
-        Sprite head_view = new Sprite(player_ss.clip(160, 0, 235, 50));
-
+        AutomataView head_view = new AutomataView();
+        Sprite head_ne = new Sprite(player_ss.clip(0, 0, 75, 50));
+        head_view.addState("ne", head_ne);
+        Sprite head_nw = new Sprite(player_ss.clip(80, 0, 80 + 75, 50));
+        head_view.addState("nw", head_nw);
+        Sprite head_sw = new Sprite(player_ss.clip(160, 0, 160 + 75, 50));
+        head_view.addState("sw", head_sw);
+        Sprite head_se = new Sprite(player_ss.clip(240, 0, 240 + 75, 50));
+        head_view.addState("se", head_se);
+        head_view.setState("sw");
 
         Animation walk_anim = new Animation(500);
         Sprite player_down_idle = new Sprite(player_ss.clip(0, 55, 60, 105));
@@ -57,17 +65,16 @@ public class PlayerBuilder {
         player_view.addState("walk", walk_anim);
         player_view.setState("idle");
 
-        player_go.setView(player_view);
-        Player p = new Player(player_go);
-        Vector2 playerSize = player_view.getSize();
-
         GameObject head_go = new GameObject(scene);
         head_go.setView(head_view);
         head_go.setLocation(
             player_go.getLocation().x() - 5,
             player_go.getLocation().y() - head_view.getSize().y() + 5);
         head_go.setZIndex(2);
-        p.getChilds().add(head_go);
+
+        player_go.setView(player_view);
+        Player p = new Player(player_go, head_go);
+        Vector2 playerSize = player_view.getSize();
 
         Sprite hand_view = null;
         try {

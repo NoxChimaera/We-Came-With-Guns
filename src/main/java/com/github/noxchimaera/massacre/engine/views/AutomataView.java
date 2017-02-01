@@ -17,6 +17,7 @@
 package com.github.noxchimaera.massacre.engine.views;
 
 import com.github.noxchimaera.massacre.engine.Vector2;
+import com.github.noxchimaera.massacre.engine.utils.StatePath;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -38,8 +39,28 @@ public class AutomataView extends View {
         states.put(key, state);
     }
 
-    public void setState(String stateKey) {
-        currentState = states.get(stateKey);
+    public void setState(String statePath) {
+        currentState = states.get(statePath);
+    }
+
+    public void setState(StatePath statePath) {
+        currentState = states.get(statePath.getCurrent());
+        if (!statePath.isEnd()) {
+            ((AutomataView)currentState).setState(statePath.next());
+        }
+    }
+
+    public boolean inState(String statePath) {
+        return currentState == states.get(statePath);
+    }
+
+    public boolean inState(StatePath statePath) {
+        boolean inState = inState(statePath.getCurrent());
+        if (!statePath.isEnd()) {
+            return ((AutomataView)currentState).inState(statePath.next());
+        } else {
+            return inState;
+        }
     }
 
     @Override public Image predraw() {

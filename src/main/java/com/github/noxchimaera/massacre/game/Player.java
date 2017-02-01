@@ -41,14 +41,20 @@ public class Player extends Actor {
 
     private float speed = 150;
 
-    public Player(GameObject gameObject) {
-        super(gameObject, false, "player");
+    private GameObject head;
+    private AutomataView headAutomata;
 
-        float x = gameObject.getLocation().x();
-        float y = gameObject.getLocation().y();
+    public Player(GameObject body, GameObject head) {
+        super(body, false, "player");
+        this.head = head;
+        getChilds().add(head);
+        headAutomata = (AutomataView)head.getView();
 
-        float w = gameObject.getView().getSize().x();
-        float h = gameObject.getView().getSize().y();
+        float x = body.getLocation().x();
+        float y = body.getLocation().y();
+
+        float w = body.getView().getSize().x();
+        float h = body.getView().getSize().y();
 
         collider_top = new Collider(x + COLLIDER_SAFE, y - COLLIDER_OFFSET,
             w - COLLIDER_OFFSET - COLLIDER_SAFE - 1, 1);
@@ -106,6 +112,38 @@ public class Player extends Actor {
 
         if (offX != 0 || offY != 0) {
             ((AutomataView)getGameObject().getView()).setState("walk");
+            if (offX < 0) {
+                if (offY < 0) {
+                    headAutomata.setState("nw");
+                } else if (offY > 0) {
+                    headAutomata.setState("sw");
+                } else if (headAutomata.inState("se")) {
+                    headAutomata.setState("sw");
+                } else if (headAutomata.inState("ne")) {
+                    headAutomata.setState("nw");
+                }
+            } else if (offX > 0) {
+                if (offY < 0) {
+                    headAutomata.setState("ne");
+                } else if (offY > 0) {
+                    headAutomata.setState("se");
+                } else if (headAutomata.inState("sw")) {
+                    headAutomata.setState("se");
+                } else if (headAutomata.inState("nw")) {
+                    headAutomata.setState("ne");
+                }
+            }
+
+
+//            if (offX < 0 && offY < 0) {
+//                headAutomata.setState("nw");
+//            } else if (offX > 0 && offY < 0) {
+//                headAutomata.setState("ne");
+//            } else if (offX > 0 && offY > 0) {
+//                headAutomata.setState("se");
+//            } else if (offX < 0 && offY > 0) {
+//                headAutomata.setState("sw");
+//            }
         } else {
             ((AutomataView)getGameObject().getView()).setState("idle");
         }

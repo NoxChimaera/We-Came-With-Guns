@@ -34,7 +34,7 @@ public class StatePath {
     }
 
     public boolean isEnd() {
-        return idx == path.length;
+        return idx >= path.length - 1;
     }
 
     public StatePath next() {

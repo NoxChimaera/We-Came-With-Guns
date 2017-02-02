@@ -54,16 +54,29 @@ public class PlayerBuilder {
         head_view.addState("se", head_se);
         head_view.setState("sw");
 
-        Animation walk_anim = new Animation(250);
+        Animation walk_anim_down = new Animation(250);
         Sprite player_down_idle = new Sprite(player_ss.clip(0, 55, 60, 105));
         Sprite player_down_stepr = new Sprite(player_ss.clip(65, 55, 125,105));
         Sprite player_down_stepl = new Sprite(player_ss.clip(130, 55, 190, 105));
-        walk_anim.addFrame(player_down_idle, player_down_stepl, player_down_idle, player_down_stepr);
+        walk_anim_down.addFrame(player_down_idle, player_down_stepl, player_down_idle, player_down_stepr);
+
+        Animation walk_anim_up = new Animation(250);
+        Sprite player_up_idle = new Sprite(player_ss.clip(0, 110, 60, 160));
+        Sprite player_up_stepr = new Sprite(player_ss.clip(65, 110, 125, 160));
+        Sprite player_up_stepl = new Sprite(player_ss.clip(130, 110, 190, 160));
+        walk_anim_up.addFrame(player_up_idle, player_up_stepl, player_up_idle, player_up_stepr);
 
         AutomataView player_view = new AutomataView();
-        player_view.addState("idle", player_down_idle);
-        player_view.addState("walk", walk_anim);
-        player_view.setState("idle");
+
+        AutomataView player_down = new AutomataView();
+        player_down.addState("idle", player_down_idle);
+        player_down.addState("walk", walk_anim_down);
+        player_view.addState("down", player_down);
+
+        AutomataView player_up = new AutomataView();
+        player_up.addState("idle", player_up_idle);
+        player_up.addState("walk", walk_anim_up);
+        player_view.addState("up", player_up);
 
         GameObject head_go = new GameObject(scene, player_go);
         head_go.setView(head_view);

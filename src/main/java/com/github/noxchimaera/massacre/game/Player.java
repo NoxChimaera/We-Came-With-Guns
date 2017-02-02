@@ -21,7 +21,9 @@ import com.github.noxchimaera.massacre.engine.actors.Actor;
 import com.github.noxchimaera.massacre.engine.collision.Collider;
 import com.github.noxchimaera.massacre.engine.controls.Keyboard;
 import com.github.noxchimaera.massacre.engine.Vector2;
+import com.github.noxchimaera.massacre.engine.controls.Mouse;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
+import com.github.noxchimaera.massacre.engine.utils.StatePath;
 import com.github.noxchimaera.massacre.engine.views.AutomataView;
 
 import java.awt.event.KeyEvent;
@@ -43,12 +45,15 @@ public class Player extends Actor {
 
     private GameObject head;
     private AutomataView headAutomata;
+    private AutomataView bodyAutomata;
 
     public Player(GameObject body, GameObject head) {
         super(body, false, "player");
         this.head = head;
         getChilds().add(head);
         headAutomata = (AutomataView)head.getView();
+
+        bodyAutomata = (AutomataView)body.getView();
 
         float x = body.getLocation().x();
         float y = body.getLocation().y();
@@ -120,6 +125,14 @@ public class Player extends Actor {
         }
     }
 
+    private void updateBody(float mouseX, float mouseY) {
+        if (mouseY < 0) {
+            bodyAutomata.setState("up");
+        } else if (mouseY > 0) {
+            bodyAutomata.setState("down");
+        }
+    }
+
     @Override public void update(GameTime gameTime) {
         float v = (Keyboard.shared().isPressed(KeyEvent.VK_SHIFT) ? 300 : 150) * (float)gameTime.getDt();
         Vector2 oldLoc = gameObject.getLocation();
@@ -139,15 +152,18 @@ public class Player extends Actor {
         gameObject.setLocation(x, y);
         updateColliders();
 
+        Vector2 mouse = Mouse.shared().getLocation()
+            .sub(gameObject.getOrigin()
+                .sub(gameObject.getScene().getCamera().getLocation()));
+        updateHead(mouse.x(), mouse.y());
+        updateBody(mouse.x(), mouse.y());
+
         float offX = x - oldLoc.x();
         float offY = y - oldLoc.y();
-
-        updateHead(offX, offY);
-
         if (offX != 0 || offY != 0) {
-            ((AutomataView)getGameObject().getView()).setState("walk");
+            bodyAutomata.setState(new StatePath("*", "walk"));
         } else {
-            ((AutomataView)getGameObject().getView()).setState("idle");
+            bodyAutomata.setState(new StatePath("*", "idle"));
         }
     }
 

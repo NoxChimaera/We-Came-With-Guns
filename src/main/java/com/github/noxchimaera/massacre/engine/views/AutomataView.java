@@ -36,6 +36,9 @@ public class AutomataView extends View {
     }
 
     public void addState(String key, View state) {
+        if (states.size() == 0) {
+            currentState = state;
+        }
         states.put(key, state);
     }
 
@@ -44,7 +47,15 @@ public class AutomataView extends View {
     }
 
     public void setState(StatePath statePath) {
-        currentState = states.get(statePath.getCurrent());
+        if (!statePath.getCurrent().equals("*")) {
+            View newState = states.get(statePath.getCurrent());
+            if (newState == null) {
+                System.out.println("There is no such state: " + statePath);
+                return;
+            }
+
+            currentState = newState;
+        }
         if (!statePath.isEnd()) {
             ((AutomataView)currentState).setState(statePath.next());
         }

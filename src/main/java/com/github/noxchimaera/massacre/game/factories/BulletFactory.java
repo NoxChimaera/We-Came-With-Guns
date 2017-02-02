@@ -20,11 +20,13 @@ import com.github.noxchimaera.massacre.Main;
 import com.github.noxchimaera.massacre.engine.Vector2;
 import com.github.noxchimaera.massacre.engine.scene.GameObject;
 import com.github.noxchimaera.massacre.engine.scene.Scene;
+import com.github.noxchimaera.massacre.engine.views.RectangleView;
 import com.github.noxchimaera.massacre.engine.views.Sprite;
 import com.github.noxchimaera.massacre.engine.views.View;
 import com.github.noxchimaera.massacre.game.Bullet;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -45,9 +47,10 @@ public class BulletFactory {
 
     public static Bullet create(Scene scene, Vector2 direction) {
         GameObject bullet_go = new GameObject(scene, null);
-        View bullet_view = new Sprite(bulletImg);
-//        View bullet_view = new RectangleView(16, 16, Color.RED);
+//        View bullet_view = new Sprite(bulletImg);
+        View bullet_view = new RectangleView(16, 16, Color.YELLOW);
         bullet_go.setView(bullet_view);
+        bullet_go.setZIndex(10);
         return new Bullet(bullet_go, direction);
     }
 

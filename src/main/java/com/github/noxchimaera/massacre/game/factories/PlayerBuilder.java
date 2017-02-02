@@ -88,10 +88,6 @@ public class PlayerBuilder {
         float xl = -handSize.x() - 1;
         float xr = playerSize.x() + 1;
 
-//        float y = location.y() + playerSize.y() / 2 - handSize.y() / 2;
-//        float xl = location.x() - handSize.x() - 1;
-//        float xr = location.x() + playerSize.x() + 1;
-
         GameObject leftHand_go = new GameObject(scene, player_go);
         leftHand_go.setLocation(xl, y);
         leftHand_go.setView(hand_view);

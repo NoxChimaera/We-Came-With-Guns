@@ -112,21 +112,11 @@ public class Player extends Actor {
                 }
             }
 
-//            head.setLocation(
-//                gameObject.getLocation().ix() - 5,
-//                gameObject.getLocation().iy() - headAutomata.getSize().iy() + 5);
-
-
-//            head_go.setLocation(
-//                player_go.getLocation().x() - 5,
-//                player_go.getLocation().y() - head_view.getSize().y() + 5);
-
-
-//            if (headAutomata.inState("ne") || headAutomata.inState("se")) {
-//                head.moveBy(-1, 0);
-//            } else {
-//                head.moveBy(1, 0);
-//            }
+            if (headAutomata.inState("ne") || headAutomata.inState("se")) {
+                head.setLocation(-10, -headAutomata.getSize().y() + 5);
+            } else {
+                head.setLocation(-5, -headAutomata.getSize().y() + 5);
+            }
         }
     }
 
@@ -154,16 +144,11 @@ public class Player extends Actor {
 
         updateHead(offX, offY);
 
-
         if (offX != 0 || offY != 0) {
             ((AutomataView)getGameObject().getView()).setState("walk");
         } else {
             ((AutomataView)getGameObject().getView()).setState("idle");
         }
-
-//        for (GameObject child : childs) {
-//            child.moveBy(offX, offY);
-//        }
     }
 
 }

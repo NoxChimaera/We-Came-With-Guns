@@ -46,7 +46,7 @@ public class Wall extends Actor {
             collisionFlag = true;
             health -= 25;
             if (health <= 0) {
-                setEnabled(false);
+                setReadyToDestroy(true);
             }
         } else if (!wasCollision() && collisionFlag) {
             collisionFlag = false;

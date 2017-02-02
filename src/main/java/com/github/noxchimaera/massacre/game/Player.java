@@ -88,30 +88,8 @@ public class Player extends Actor {
             .count() != 0;
     }
 
-    @Override public void update(GameTime gameTime) {
-        float v = (Keyboard.shared().isPressed(KeyEvent.VK_SHIFT) ? 300 : 150) * (float)gameTime.getDt();
-        Vector2 oldLoc = gameObject.getLocation();
-        float x = gameObject.getLocation().x();
-        float y = gameObject.getLocation().y();
-
-        if (Keyboard.shared().isPressed(KeyEvent.VK_UP, KeyEvent.VK_W) && !wasCollision(collider_top)) {
-            y -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN, KeyEvent.VK_S) && !wasCollision(collider_bottom)) {
-            y += v;
-        }
-        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT, KeyEvent.VK_A) && !wasCollision(collider_left)) {
-            x -= v;
-        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT, KeyEvent.VK_D) && !wasCollision(collider_right)) {
-            x += v;
-        }
-        gameObject.setLocation(x, y);
-        updateColliders();
-
-        float offX = x - oldLoc.x();
-        float offY = y - oldLoc.y();
-
+    private void updateHead(float offX, float offY) {
         if (offX != 0 || offY != 0) {
-            ((AutomataView)getGameObject().getView()).setState("walk");
             if (offX < 0) {
                 if (offY < 0) {
                     headAutomata.setState("nw");
@@ -134,23 +112,58 @@ public class Player extends Actor {
                 }
             }
 
+//            head.setLocation(
+//                gameObject.getLocation().ix() - 5,
+//                gameObject.getLocation().iy() - headAutomata.getSize().iy() + 5);
 
-//            if (offX < 0 && offY < 0) {
-//                headAutomata.setState("nw");
-//            } else if (offX > 0 && offY < 0) {
-//                headAutomata.setState("ne");
-//            } else if (offX > 0 && offY > 0) {
-//                headAutomata.setState("se");
-//            } else if (offX < 0 && offY > 0) {
-//                headAutomata.setState("sw");
+
+//            head_go.setLocation(
+//                player_go.getLocation().x() - 5,
+//                player_go.getLocation().y() - head_view.getSize().y() + 5);
+
+
+//            if (headAutomata.inState("ne") || headAutomata.inState("se")) {
+//                head.moveBy(-1, 0);
+//            } else {
+//                head.moveBy(1, 0);
 //            }
+        }
+    }
+
+    @Override public void update(GameTime gameTime) {
+        float v = (Keyboard.shared().isPressed(KeyEvent.VK_SHIFT) ? 300 : 150) * (float)gameTime.getDt();
+        Vector2 oldLoc = gameObject.getLocation();
+        float x = gameObject.getLocation().x();
+        float y = gameObject.getLocation().y();
+
+        if (Keyboard.shared().isPressed(KeyEvent.VK_UP, KeyEvent.VK_W) && !wasCollision(collider_top)) {
+            y -= v;
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_DOWN, KeyEvent.VK_S) && !wasCollision(collider_bottom)) {
+            y += v;
+        }
+        if (Keyboard.shared().isPressed(KeyEvent.VK_LEFT, KeyEvent.VK_A) && !wasCollision(collider_left)) {
+            x -= v;
+        } else if (Keyboard.shared().isPressed(KeyEvent.VK_RIGHT, KeyEvent.VK_D) && !wasCollision(collider_right)) {
+            x += v;
+        }
+        gameObject.setLocation(x, y);
+        updateColliders();
+
+        float offX = x - oldLoc.x();
+        float offY = y - oldLoc.y();
+
+        updateHead(offX, offY);
+
+
+        if (offX != 0 || offY != 0) {
+            ((AutomataView)getGameObject().getView()).setState("walk");
         } else {
             ((AutomataView)getGameObject().getView()).setState("idle");
         }
 
-        for (GameObject child : childs) {
-            child.moveBy(offX, offY);
-        }
+//        for (GameObject child : childs) {
+//            child.moveBy(offX, offY);
+//        }
     }
 
 }

@@ -34,7 +34,7 @@ import java.io.IOException;
 public class PlayerBuilder {
 
     public Player build(Scene scene, Vector2 location) {
-        GameObject player_go = new GameObject(scene);
+        GameObject player_go = new GameObject(scene, null);
         player_go.setLocation(location);
         player_go.setZIndex(1);
 
@@ -54,7 +54,7 @@ public class PlayerBuilder {
         head_view.addState("se", head_se);
         head_view.setState("sw");
 
-        Animation walk_anim = new Animation(500);
+        Animation walk_anim = new Animation(250);
         Sprite player_down_idle = new Sprite(player_ss.clip(0, 55, 60, 105));
         Sprite player_down_stepr = new Sprite(player_ss.clip(65, 55, 125,105));
         Sprite player_down_stepl = new Sprite(player_ss.clip(130, 55, 190, 105));
@@ -65,11 +65,11 @@ public class PlayerBuilder {
         player_view.addState("walk", walk_anim);
         player_view.setState("idle");
 
-        GameObject head_go = new GameObject(scene);
+        GameObject head_go = new GameObject(scene, player_go);
         head_go.setView(head_view);
         head_go.setLocation(
-            player_go.getLocation().x() - 5,
-            player_go.getLocation().y() - head_view.getSize().y() + 5);
+            -5,
+            -head_view.getSize().y() + 5);
         head_go.setZIndex(2);
 
         player_go.setView(player_view);
@@ -84,16 +84,19 @@ public class PlayerBuilder {
         }
         Vector2 handSize = hand_view.getSize();
 
-        float y = location.y() + playerSize.y() / 2 - handSize.y() / 2;
-        float xl = location.x() - handSize.x() - 1;
-        float xr = location.x() + playerSize.x() + 1;
+        float y = playerSize.y() / 2 - handSize.y() / 2;
+        float xl = -handSize.x() - 1;
+        float xr = playerSize.x() + 1;
 
+//        float y = location.y() + playerSize.y() / 2 - handSize.y() / 2;
+//        float xl = location.x() - handSize.x() - 1;
+//        float xr = location.x() + playerSize.x() + 1;
 
-        GameObject leftHand_go = new GameObject(scene);
+        GameObject leftHand_go = new GameObject(scene, player_go);
         leftHand_go.setLocation(xl, y);
         leftHand_go.setView(hand_view);
 
-        GameObject rightHand_go = new GameObject(scene);
+        GameObject rightHand_go = new GameObject(scene, player_go);
         rightHand_go.setLocation(xr, y);
         rightHand_go.setView(hand_view);
 

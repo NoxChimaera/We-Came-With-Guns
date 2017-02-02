@@ -44,7 +44,7 @@ public class BulletFactory {
     }
 
     public static Bullet create(Scene scene, Vector2 direction) {
-        GameObject bullet_go = new GameObject(scene);
+        GameObject bullet_go = new GameObject(scene, null);
         View bullet_view = new Sprite(bulletImg);
 //        View bullet_view = new RectangleView(16, 16, Color.RED);
         bullet_go.setView(bullet_view);

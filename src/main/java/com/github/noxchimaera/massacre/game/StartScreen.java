@@ -81,7 +81,7 @@ public class StartScreen extends GameScreen {
         walls = new ArrayList<>();
         Random r = new Random();
         for (int i = 0; i < 1000; i += 32) {
-            GameObject wall_go = new GameObject(scene);
+            GameObject wall_go = new GameObject(scene, null);
             wall_go.setLocation(i, 100);
             wall_go.setView(new RectangleView(32, 16,
                 new Color(r.nextFloat(), r.nextFloat(), r.nextFloat())));
@@ -90,7 +90,7 @@ public class StartScreen extends GameScreen {
         }
         actors.addAll(walls);
 
-        GameObject cursor_go = new GameObject(scene);
+        GameObject cursor_go = new GameObject(scene, null);
         cursor_go.setLocation(0, 0);
         cursor_go.setView(new RectangleView(10, 10, Color.WHITE));
         cursor_go.setZIndex(ZIndex.GUI);

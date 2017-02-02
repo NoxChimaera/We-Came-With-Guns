@@ -29,18 +29,26 @@ public class GameObject {
 
     private float x;
     private float y;
+    private GameObject relativeTo;
 
     private int zIndex;
     private Scene scene;
 
     private View view;
 
-    public GameObject(Scene scene) {
+    public GameObject(Scene scene, GameObject relativeTo) {
         this.scene = scene;
+        this.relativeTo = relativeTo;
     }
 
     public Vector2 getLocation() {
         return new Vector2(x, y);
+    }
+
+    public Vector2 getAbsoluteLocation() {
+        return relativeTo == null
+            ? getLocation()
+            : new Vector2(x + relativeTo.x, y + relativeTo.y);
     }
 
     public void setLocation(Vector2 location) {
@@ -94,7 +102,7 @@ public class GameObject {
             if (zIndex < 0) {
                 g.drawImage(view.predraw(), (int)x, (int)y, view.getSize().ix(), view.getSize().iy(), null);
             } else {
-                Vector2 loc = getLocation().sub(getScene().getCamera().getLocation());
+                Vector2 loc = getAbsoluteLocation().sub(getScene().getCamera().getLocation());
                 g.drawImage(view.predraw(), loc.ix(), loc.iy(), view.getSize().ix(), view.getSize().iy(), null);
             }
         }
